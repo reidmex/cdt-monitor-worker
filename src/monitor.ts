@@ -254,7 +254,7 @@ export class Monitor {
     if (batchStatements.length > 0) {
       await this.store.executeBatch(batchStatements);
     }
-    if (logs.some(l => !l.includes('无动作')) || currentTime % 900 < 60) {
+    if (logs.some(l => !l.includes('无动作')) || currentTime % 120 < 60) {
       await this.store.updateLastRunTime(currentTime);
     }
     return logs.join('\n');
