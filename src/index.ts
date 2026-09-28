@@ -223,12 +223,33 @@ export default {
     }
   },
 
-  /** 每分钟触发 — 对应原版 cron monitor.php */
+ // Modified by Reid
+  /*
+  // 每分钟触发 — 对应原版 cron monitor.php
   async scheduled(_event: any, env: Env, ctx: any): Promise<void> {
     ctx.waitUntil(runMonitor(env));
   },
+  */
+   /** 每分钟触发 — 对应原版 cron monitor.php */
+  async scheduled(controller: any, env: Env, ctx: any): Promise<void> {
+    if (ctx && typeof ctx.waitUntil === 'function') {
+      // 核心优化：利用 waitUntil 将任务推入后台，允许消耗更多 CPU 时间
+      ctx.waitUntil(
+        runMonitor(env).catch(err => console.error("监控运行失败:", err))
+      );
+    } else {
+      // 备用降级方案
+      try {
+        await runMonitor(env);
+      } catch (err) {
+        console.error("监控备用方案运行失败:", err);
+      }
+    }
+  },
 };
 
+// Modified by Reid
+/*
 async function runMonitor(env: Env): Promise<void> {
   const store = new Store(env.DB);
   await store.ensureSchema().catch(() => {});
@@ -241,6 +262,29 @@ async function runMonitor(env: Env): Promise<void> {
     try {
       await store.addLog('error', `监控任务异常: ${e?.message || e}`);
     } catch {}
+  }
+}
+*/
+async function runMonitor(env: Env): Promise<void> {
+  const store = new Store(env.DB);
+  await store.ensureSchema().catch(() => {});
+  const monitor = new Monitor(store);
+  
+  // 定义一个 30 秒的超时限制
+  const timeout = new Promise<never>((_, reject) => setTimeout(() => reject(new Error("Timeout")), 30000));
+
+  try {
+    // 让监控逻辑和超时赛跑，防止卡死
+    const output = await Promise.race([monitor.monitor(), timeout]);
+    console.log('[monitor]', output.replace(/\n/g, ' | ').slice(0, 2000));
+  } catch (e: any) {
+    console.error('[monitor] error:', e?.message || e);
+    try {
+      await store.addLog('error', `监控任务异常: ${e?.message || e}`);
+    } catch {}
+  } finally {
+    // 无论成功、失败还是超时，必须在此处强制更新心跳（请替换为你 store 实际更新心跳的方法）
+    try { await store.updateHeartbeat(); } catch {}
   }
 }
 
