@@ -223,14 +223,7 @@ export default {
     }
   },
 
- // Modified by Reid
-  /*
-  // 每分钟触发 — 对应原版 cron monitor.php
-  async scheduled(_event: any, env: Env, ctx: any): Promise<void> {
-    ctx.waitUntil(runMonitor(env));
-  },
-  */
-   /** 每分钟触发 — 对应原版 cron monitor.php */
+  /** 每分钟触发 — 对应原版 cron monitor.php */
   async scheduled(controller: any, env: Env, ctx: any): Promise<void> {
     if (ctx && typeof ctx.waitUntil === 'function') {
       // 核心优化：利用 waitUntil 将任务推入后台，允许消耗更多 CPU 时间
@@ -248,23 +241,6 @@ export default {
   },
 };
 
-// Modified by Reid
-/*
-async function runMonitor(env: Env): Promise<void> {
-  const store = new Store(env.DB);
-  await store.ensureSchema().catch(() => {});
-  const monitor = new Monitor(store);
-  try {
-    const output = await monitor.monitor();
-    console.log('[monitor]', output.replace(/\n/g, ' | ').slice(0, 2000));
-  } catch (e: any) {
-    console.error('[monitor] error:', e?.message || e);
-    try {
-      await store.addLog('error', `监控任务异常: ${e?.message || e}`);
-    } catch {}
-  }
-}
-*/
 async function runMonitor(env: Env): Promise<void> {
   const store = new Store(env.DB);
   await store.ensureSchema().catch(() => {});
