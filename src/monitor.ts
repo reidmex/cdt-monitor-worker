@@ -211,7 +211,7 @@ export class Monitor {
 
       // ---- 4. 保活逻辑 ----
       if (keepAlive && !isOverThreshold && !statusTransformed) {
-        if (account.schedule_enabled == 0 || isTimeInRange(currentUserTime, account.start_time, account.stop_time)) {
+        if (account.schedule_enabled == 1 && isTimeInRange(currentUserTime, account.start_time, account.stop_time)) {
           if (status === 'Stopped') {
             if (await this.safeControlInstance(account, 'start')) {
               actions.push('保活启动');
