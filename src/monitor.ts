@@ -248,7 +248,12 @@ export class Monitor {
       logs.push(logLine);
     }
 
-    await this.store.updateLastRunTime(currentTime);
+    if (batchStatements.length > 0) {
+      await this.store.executeBatch(batchStatements);
+    }
+    if (logs.some(l => !l.includes('无动作')) || currentTime % 900 < 60) {
+      await this.store.updateLastRunTime(currentTime);
+    }
     return logs.join('\n');
   }
 
