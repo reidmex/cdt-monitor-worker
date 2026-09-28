@@ -107,6 +107,9 @@ export class Monitor {
     const accounts = await this.store.getAccounts();
     const logs: string[] = [];
 
+    const lastHb = await this.store.getLastHeartbeatTime();
+    const batchStatements: any[] = [];
+
     for (const account of accounts) {
       const logPrefix = `[${account.access_key_id}]`;
       const actions: string[] = [];
