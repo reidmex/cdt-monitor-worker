@@ -107,7 +107,7 @@ export class Monitor {
     const accounts = await this.store.getAccounts();
     const logs: string[] = [];
 
-    const lastHb = await this.store.getLastHeartbeatTime();
+    let lastHb = await this.store.getLastHeartbeatTime();
     const batchStatements: any[] = [];
     let hasWrittenHeartbeatThisRound = false;
 
