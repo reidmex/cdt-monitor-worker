@@ -221,7 +221,7 @@ export class Monitor {
               await this.store.addLog('info', `执行保活启动 [${account.access_key_id}]`);
               const mailRes = await notifier.notifySchedule('保活启动', account, '检测到实例在工作时段非预期关机，已尝试自动启动。');
               await this.logNotificationResult(mailRes, account.access_key_id);
-              await this.store.updateAccountStatus(account.id, traffic, 'Starting', currentTime);
+              batchStatements.push(this.store.prepareUpdateAccountStatus(account.id, traffic, 'Starting', currentTime));
               status = 'Starting';
             } else {
               apiStatusLog += ' [保活启动失败,下次重试]';
