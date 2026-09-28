@@ -109,6 +109,7 @@ export class Monitor {
 
     const lastHb = await this.store.getLastHeartbeatTime();
     const batchStatements: any[] = [];
+    let hasWrittenHeartbeatThisRound = false;
 
     for (const account of accounts) {
       const logPrefix = `[${account.access_key_id}]`;
@@ -242,8 +243,10 @@ export class Monitor {
       const logLine = `${logPrefix} ${actionLog} | ${trafficDesc} | ${status} | ${apiStatusLog}`;
       // 心跳日志降频：有动作立即记；无动作时 5 分钟记一条（原版每分钟记，但 D1 按行计费，降频可大幅减少读写量）
       // const lastHb = await this.store.getLastHeartbeatTime();
-      if (actions.length > 0 || currentTime - lastHb >= 300) {
+      if (actions.length > 0 || (currentTime - lastHb >= 300 && !hasWrittenHeartbeatThisRound)) {
         await this.store.addLog('heartbeat', logLine);
+        lastHb = currentTime;
+        hasWrittenHeartbeatThisRound = true;
       }
       logs.push(logLine);
     }
