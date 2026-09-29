@@ -85,6 +85,9 @@ export class Monitor {
     const settings = await this.store.getAllSettings();
     const notifier = new Notifier(settings);
 
+    const currentUserTime = shanghaiTimeStr();
+    const currentTime = Math.floor(Date.now() / 1000);
+
     // 清理
     const lastPrune = Number(settings['last_prune_at'] || 0);
     if (currentTime - lastPrune > 6 * 3600) {
@@ -100,8 +103,6 @@ export class Monitor {
       await this.store.db.prepare('DELETE FROM login_attempts WHERE attempt_time < ?').bind(Math.floor(Date.now() / 1000) - 7 * 86400).run();
     }
 
-    const currentUserTime = shanghaiTimeStr();
-    const currentTime = Math.floor(Date.now() / 1000);
     const threshold = parseInt(settings['traffic_threshold'] || '95', 10) || 95;
     const shutdownMode = settings['shutdown_mode'] || 'KeepCharging';
     const thresholdAction = settings['threshold_action'] || 'stop_and_notify';
