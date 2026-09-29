@@ -103,6 +103,12 @@ export class Monitor {
       await this.store.db.prepare('DELETE FROM login_attempts WHERE attempt_time < ?').bind(Math.floor(Date.now() / 1000) - 7 * 86400).run();
     }
 
+    if (h === '00' && m === '05') {
+      const yest = shanghaiDayStart(Math.floor(Date.now() / 1000) - 86400);
+      const n = await this.store.refreshDailyStats(yest);
+      if (n > 0) await this.store.addLog('info', `日统计物化完成，已汇总 ${n} 个账号`);
+    }
+
     const threshold = parseInt(settings['traffic_threshold'] || '95', 10) || 95;
     const shutdownMode = settings['shutdown_mode'] || 'KeepCharging';
     const thresholdAction = settings['threshold_action'] || 'stop_and_notify';
@@ -164,6 +170,7 @@ export class Monitor {
           newStatus = await this.safeGetInstanceStatus(account);
         }
 
+        /*
         if (newTraffic < 0) {
           apiStatusLog = '流量API异常';
           newUpdateTime = lastUpdate;
@@ -172,6 +179,17 @@ export class Monitor {
           apiStatusLog = '已更新';
           await this.store.addHourlyStat(account.id, traffic);
           await this.store.addDailyStat(account.id, traffic);
+        }
+        */
+        
+        if (newTraffic < 0) {
+          apiStatusLog = '流量API异常';
+          newUpdateTime = lastUpdate;
+        } else {
+          traffic = newTraffic;
+          apiStatusLog = '已更新';
+          // 优化：hourly 只对值变化的账号落盘；daily 不再由巡检写入，改为每日 00:05 物化
+          await this.store.addHourlyStat(account.id, traffic, account.traffic_used);
         }
 
         if (newStatus === 'Unknown') {
@@ -281,6 +299,7 @@ export class Monitor {
           await new Promise((r) => setTimeout(r, 500));
           newStatus = await this.safeGetInstanceStatus(account);
         }
+        /*
         if (newTraffic >= 0) {
           traffic = newTraffic;
           await this.store.addHourlyStat(account.id, traffic);
@@ -288,6 +307,15 @@ export class Monitor {
         } else {
           newUpdateTime = lastUpdate;
         }
+        */
+        if (newTraffic >= 0) {
+          traffic = newTraffic;
+          // 优化：hourly 去重 + daily 不在读取路径写入
+          await this.store.addHourlyStat(account.id, traffic, account.traffic_used);
+        } else {
+          newUpdateTime = lastUpdate;
+        }
+        
         if (newStatus === 'Unknown') newUpdateTime = lastUpdate;
         else status = newStatus;
         await this.store.updateAccountStatus(account.id, traffic, status, newUpdateTime);
@@ -327,11 +355,17 @@ export class Monitor {
     const traffic = await this.safeGetTraffic(target);
     const status = await this.safeGetInstanceStatus(target);
     let finalTraffic = traffic;
+
     if (traffic < 0) {
       finalTraffic = target.traffic_used;
+    /*
     } else {
       await this.store.addHourlyStat(id, traffic);
       await this.store.addDailyStat(id, traffic);
+    }
+    */
+    } else {
+      await this.store.addHourlyStat(id, traffic, target.traffic_used);
     }
     await this.store.updateAccountStatus(id, finalTraffic, status, currentTime);
 
