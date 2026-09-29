@@ -290,15 +290,6 @@ export class Store {
   }
 
   // ============ stats ============
-  /*
-  async addHourlyStat(accountId: number, traffic: number): Promise<void> {
-    const hourTs = Math.floor(now() / 3600) * 3600;
-    await this.db
-      .prepare('INSERT OR REPLACE INTO traffic_hourly (account_id, traffic, recorded_at) VALUES (?, ?, ?)')
-      .bind(accountId, traffic, hourTs)
-      .run();
-  }
-  */
   async addHourlyStat(accountId: number, traffic: number, lastTraffic?: number): Promise<void> {
     if (lastTraffic !== undefined && lastTraffic === traffic) return;
     const hourTs = Math.floor(now() / 3600) * 3600;
