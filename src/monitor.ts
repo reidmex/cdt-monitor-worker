@@ -170,18 +170,6 @@ export class Monitor {
           newStatus = await this.safeGetInstanceStatus(account);
         }
 
-        /*
-        if (newTraffic < 0) {
-          apiStatusLog = '流量API异常';
-          newUpdateTime = lastUpdate;
-        } else {
-          traffic = newTraffic;
-          apiStatusLog = '已更新';
-          await this.store.addHourlyStat(account.id, traffic);
-          await this.store.addDailyStat(account.id, traffic);
-        }
-        */
-        
         if (newTraffic < 0) {
           apiStatusLog = '流量API异常';
           newUpdateTime = lastUpdate;
@@ -299,15 +287,7 @@ export class Monitor {
           await new Promise((r) => setTimeout(r, 500));
           newStatus = await this.safeGetInstanceStatus(account);
         }
-        /*
-        if (newTraffic >= 0) {
-          traffic = newTraffic;
-          await this.store.addHourlyStat(account.id, traffic);
-          await this.store.addDailyStat(account.id, traffic);
-        } else {
-          newUpdateTime = lastUpdate;
-        }
-        */
+
         if (newTraffic >= 0) {
           traffic = newTraffic;
           // 优化：hourly 去重 + daily 不在读取路径写入
@@ -358,12 +338,6 @@ export class Monitor {
 
     if (traffic < 0) {
       finalTraffic = target.traffic_used;
-    /*
-    } else {
-      await this.store.addHourlyStat(id, traffic);
-      await this.store.addDailyStat(id, traffic);
-    }
-    */
     } else {
       await this.store.addHourlyStat(id, traffic, target.traffic_used);
     }
