@@ -86,9 +86,13 @@ export class Monitor {
     const notifier = new Notifier(settings);
 
     // 清理
-    await this.store.pruneLogs();
-    await this.store.pruneStats();
-    await this.store.pruneBillingCache();
+    const lastPrune = Number(settings['last_prune_at'] || 0);
+    if (currentTime - lastPrune > 6 * 3600) {
+      await this.store.pruneLogs();
+      await this.store.pruneStats();
+      await this.store.pruneBillingCache();
+      await this.store.saveSetting('last_prune_at', currentTime);
+    }
 
     // 每天 04:00 清理旧登录尝试（对应原版 VACUUM 时机的近似）
     const { h, m } = shanghaiHourMinute();
@@ -106,6 +110,7 @@ export class Monitor {
 
     const accounts = await this.store.getAccounts();
     const logs: string[] = [];
+    let lastHb = await this.store.getLastHeartbeatTime();
 
     for (const account of accounts) {
       const logPrefix = `[${account.access_key_id}]`;
@@ -239,6 +244,7 @@ export class Monitor {
       const lastHb = await this.store.getLastHeartbeatTime();
       if (actions.length > 0 || currentTime - lastHb >= 300) {
         await this.store.addLog('heartbeat', logLine);
+        lastHb = currentTime;
       }
       logs.push(logLine);
     }
