@@ -117,17 +117,6 @@ export class Store {
     await this.saveSetting('last_monitor_run', t);
   }
 
-  prepareUpdateAccountStatus(id: number, trafficUsed: number, status: string, updatedAt: number) {
-    return this.db
-      .prepare('UPDATE accounts SET traffic_used = ?, instance_status = ?, updated_at = ? WHERE id = ?')
-      .bind(trafficUsed, status, updatedAt, id);
-  }
-
-  async executeBatch(statements: any[]): Promise<any> {
-    if (!statements || statements.length === 0) return [];
-    return await this.db.batch(statements);
-  }
-
   async getLastRunTime(): Promise<number> {
     const v = await this.getSetting('last_monitor_run', '0');
     return parseInt(v || '0', 10) || 0;
