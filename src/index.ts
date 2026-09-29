@@ -260,7 +260,7 @@ async function runMonitor(env: Env): Promise<void> {
     } catch {}
   } finally {
     // 无论成功、失败还是超时，必须在此处强制更新心跳（请替换为你 store 实际更新心跳的方法）
-    try { await store.updateHeartbeat(); } catch {}
+    catch {}
   }
 }
 
