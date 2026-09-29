@@ -258,9 +258,6 @@ async function runMonitor(env: Env): Promise<void> {
     try {
       await store.addLog('error', `监控任务异常: ${e?.message || e}`);
     } catch {}
-  } finally {
-    // 无论成功、失败还是超时，必须在此处强制更新心跳（请替换为你 store 实际更新心跳的方法）
-    catch {}
   }
 }
 
