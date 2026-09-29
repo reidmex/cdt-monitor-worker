@@ -3,7 +3,7 @@
  */
 import type { Account } from './aliyun';
 import { AliyunClient } from './aliyun';
-import { Store, shanghaiTimeStr, shanghaiHourMinute, shanghaiMonth, shanghaiHM, shanghaiDate, fmtTime } from './store';
+import { Store, shanghaiTimeStr, shanghaiHourMinute, shanghaiMonth, shanghaiHM, shanghaiDate, fmtTime, shanghaiDayStart } from './store';
 import { Notifier } from './notify';
 
 const REGION_NAMES: Record<string, string> = {
