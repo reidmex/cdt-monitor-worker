@@ -200,15 +200,15 @@
                         <span class="text-sm font-medium text-gray-500">账号</span>
                         <span class="text-sm font-medium text-[#1C1C1E] font-mono">{{ item.account }}</span>
                     </div>
-                    <div v-if="item.cost && item.cost.enabled" class="flex justify-between items-center">
-                      <span class="text-sm font-medium text-gray-500">本月费用</span>
-                      <template v-if="!item.cost.error">
-                        <span
-                          class="text-xs font-medium font-bold text-red-500">
-                          {{ item.cost.currency === 'USD' ? '$' : '¥' }}{{ Number(item.cost.monthly_cost).toFixed(2) }}
+                    <div v-if="isAdmin && item.cost && item.cost.enabled" class="flex justify-between items-center">
+                        <span class="text-sm font-medium text-gray-500">本月费用</span>
+                        <span v-if="!item.cost.error" class="text-xs font-medium">
+                            <span v-if="item.cost.monthly_cost !== null" class="font-bold"
+                                :class="parseFloat(item.cost.monthly_cost) > 0.45 ? 'text-red-500' : 'text-green-600'">{{
+                                item.cost.currency === 'USD' ? '$' : '¥' }}{{
+                                item.cost.monthly_cost }}</span>
                         </span>
-                      </template>
-                      <span v-else class="text-[10px] text-gray-400">{{ item.cost.error }}</span>
+                        <span v-else class="text-[10px] text-gray-400">{{ item.cost.error }}</span>
                     </div>
                     <div v-if="item.remark" class="flex justify-between items-center">
                         <span class="text-sm font-medium text-gray-500">备注</span>
