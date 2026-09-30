@@ -84,6 +84,7 @@ export class Monitor {
   async monitor(): Promise<string> {
     const settings = await this.store.getAllSettings();
     const notifier = new Notifier(settings);
+    const currentTime = Math.floor(Date.now() / 1000);
 
     // 清理
     const lastPrune = Number(settings['last_prune_at'] || 0);
@@ -101,7 +102,6 @@ export class Monitor {
     }
 
     const currentUserTime = shanghaiTimeStr();
-    const currentTime = Math.floor(Date.now() / 1000);
     const threshold = parseInt(settings['traffic_threshold'] || '95', 10) || 95;
     const shutdownMode = settings['shutdown_mode'] || 'KeepCharging';
     const thresholdAction = settings['threshold_action'] || 'stop_and_notify';
