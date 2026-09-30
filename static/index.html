@@ -206,7 +206,7 @@
                         <span v-if="item.cost.monthly_cost !== null"
                           class="font-bold"
                           :class="parseFloat(item.cost.monthly_cost) > 0.45 ? 'text-red-500' : 'text-green-600'">
-                          {{ item.cost.currency === 'USD' ? '$' : '¥' }}{{ item.cost.monthly_cost }}
+                          {{ item.cost.currency === 'USD' ? '$' : '¥' }}{{ parseFloat(item.cost.monthly_cost).toFixed(2) }}
                         </span>
                       </span>
                       <span v-else class="text-[10px] text-gray-400">{{ item.cost.error }}</span>
