@@ -120,6 +120,7 @@ export class Monitor {
     let lastHb = await this.store.getLastHeartbeatTime();
 
     for (const account of accounts) {
+      try {
       const logPrefix = `[${account.access_key_id}]`;
       const actions: string[] = [];
       let forceRefresh = false;
@@ -254,6 +255,10 @@ export class Monitor {
         lastHb = currentTime;
       }
       logs.push(logLine);
+      } catch (e: any) {  // 👇 捕获，记日志，继续下一个账号
+      await this.store.addLog('error', `账号 ${account.access_key_id} 处理异常: ${e?.message || e}`).catch(() => {});
+      continue;
+    }
     }
 
     await this.store.updateLastRunTime(currentTime);
