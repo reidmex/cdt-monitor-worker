@@ -19,3 +19,15 @@ database_name = "cdt_monitor"
 # 每分钟触发监控（对应原版 cron * * * * *）
 [triggers]
 crons = ["* * * * *"]
+
+# 开启Workers日志
+[observability.logs]
+enabled = true
+head_sampling_rate = 1
+invocation_logs = true
+persist = true
+
+[observability.traces]
+enabled = false
+head_sampling_rate = 1
+persist = true
