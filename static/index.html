@@ -1043,6 +1043,11 @@
 
                 const cronWarning = ref(false);
 
+                const costClass = (cost) => {
+                  if (cost === null || cost === undefined) return 'text-gray-400';
+                  return Number(cost) > 0.45 ? 'text-red-500' : 'text-green-600';
+                };
+
                 // 通知相关
                 const currentNotifyTab = ref('email');
                 const testingTelegram = ref(false);
