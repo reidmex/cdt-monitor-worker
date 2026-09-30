@@ -44,7 +44,6 @@ const SCHEMA_STATEMENTS = [
     created_at INTEGER
   )`,
   `CREATE INDEX IF NOT EXISTS idx_logs_type_created ON logs (type, created_at)`,
-  `CREATE INDEX IF NOT EXISTS idx_logs_created_at ON logs(created_at)`,
   `CREATE TABLE IF NOT EXISTS login_attempts (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     ip TEXT,
@@ -279,8 +278,7 @@ export class Store {
   }
 
   // ============ stats ============
-  async addHourlyStat(accountId: number, traffic: number, lastTraffic?: number): Promise<void> {
-    if (lastTraffic !== undefined && lastTraffic === traffic) return;
+  async addHourlyStat(accountId: number, traffic: number): Promise<void> {
     const hourTs = Math.floor(now() / 3600) * 3600;
     await this.db
       .prepare('INSERT OR REPLACE INTO traffic_hourly (account_id, traffic, recorded_at) VALUES (?, ?, ?)')
@@ -296,23 +294,6 @@ export class Store {
       .run();
   }
 
-  async refreshDailyStats(dayTs: number): Promise<number> {
-    const rows = await this.db
-      .prepare(`SELECT account_id, MAX(traffic) AS peak FROM traffic_hourly
-                WHERE recorded_at >= ? AND recorded_at < ?
-                GROUP BY account_id`)
-      .bind(dayTs, dayTs + 86400)
-      .all<{ account_id: number; peak: number }>();
-    if (!rows.results.length) return 0;
-    const stmts = rows.results.map((r) =>
-      this.db
-        .prepare('INSERT OR REPLACE INTO traffic_daily (account_id, traffic, recorded_at) VALUES (?, ?, ?)')
-        .bind(r.account_id, Number(r.peak), dayTs),
-    );
-    await this.db.batch(stmts);
-    return rows.results.length;
-  }
-  
   async getHourlyStats(accountId: number): Promise<{ traffic: number; recorded_at: number }[]> {
     const { results } = await this.db
       .prepare('SELECT traffic, recorded_at FROM traffic_hourly WHERE account_id = ? ORDER BY recorded_at DESC LIMIT 25')
