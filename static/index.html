@@ -204,8 +204,7 @@
                       <span class="text-sm font-medium text-gray-500">本月费用</span>
                       <template v-if="!item.cost.error">
                         <span
-                          class="text-xs font-medium font-bold"
-                          :class="costClass(item.cost.monthly_cost)">
+                          class="text-xs font-medium font-bold text-red-500">
                           {{ item.cost.currency === 'USD' ? '$' : '¥' }}{{ Number(item.cost.monthly_cost).toFixed(2) }}
                         </span>
                       </template>
@@ -1042,11 +1041,6 @@
                 let logInterval = null;
 
                 const cronWarning = ref(false);
-
-                const costClass = (cost) => {
-                  if (cost === null || cost === undefined) return 'text-gray-400';
-                  return Number(cost) > 0.45 ? 'text-red-500' : 'text-green-600';
-                };
 
                 // 通知相关
                 const currentNotifyTab = ref('email');
