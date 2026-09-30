@@ -285,7 +285,10 @@ export class Store {
       .bind(accountId, hourTs)
       .first();
     if (existing) return;  // 已有，跳过
-    await this.db.prepare('INSERT INTO traffic_hourly ...').bind(accountId, traffic, hourTs).run();
+    await this.db
+      .prepare('INSERT INTO traffic_hourly (account_id, traffic, recorded_at) VALUES (?, ?, ?)')
+      .bind(accountId, traffic, hourTs)
+      .run();
   }
 
   async addDailyStat(accountId: number, traffic: number): Promise<void> {
