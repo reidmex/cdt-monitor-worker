@@ -204,7 +204,8 @@
                       <span class="text-sm font-medium text-gray-500">本月费用</span>
                       <template v-if="!item.cost.error">
                         <span
-                          class="text-xs font-medium font-bold text-red-500">
+                          class="text-xs font-medium font-bold"
+                          :class="Number(item.cost.monthly_cost) > 0.45 ? 'text-red-500' : 'text-green-500'">
                           {{ item.cost.currency === 'USD' ? '$' : '¥' }}{{ Number(item.cost.monthly_cost).toFixed(2) }}
                         </span>
                       </template>
