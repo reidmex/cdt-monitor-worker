@@ -86,9 +86,13 @@ export class Monitor {
     const notifier = new Notifier(settings);
 
     // 清理
-    await this.store.pruneLogs();
-    await this.store.pruneStats();
-    await this.store.pruneBillingCache();
+    const lastPrune = Number(settings['last_prune_at'] || 0);
+    if (currentTime - lastPrune > 6 * 3600) {
+      await this.store.pruneLogs();
+      await this.store.pruneStats();
+      await this.store.pruneBillingCache();
+      await this.store.saveSetting('last_prune_at', currentTime);
+    }
 
     // 每天 04:00 清理旧登录尝试（对应原版 VACUUM 时机的近似）
     const { h, m } = shanghaiHourMinute();
