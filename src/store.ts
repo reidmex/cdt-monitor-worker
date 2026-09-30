@@ -280,10 +280,12 @@ export class Store {
   // ============ stats ============
   async addHourlyStat(accountId: number, traffic: number): Promise<void> {
     const hourTs = Math.floor(now() / 3600) * 3600;
-    await this.db
-      .prepare('INSERT OR REPLACE INTO traffic_hourly (account_id, traffic, recorded_at) VALUES (?, ?, ?)')
-      .bind(accountId, traffic, hourTs)
-      .run();
+    const existing = await this.db
+      .prepare('SELECT id FROM traffic_hourly WHERE account_id=? AND recorded_at=?')
+      .bind(accountId, hourTs)
+      .first();
+    if (existing) return;  // 已有，跳过
+    await this.db.prepare('INSERT INTO traffic_hourly ...').bind(accountId, traffic, hourTs).run();
   }
 
   async addDailyStat(accountId: number, traffic: number): Promise<void> {
