@@ -166,8 +166,8 @@ export class Monitor {
         const newTraffic = await this.safeGetTraffic(account);
         let newStatus = await this.safeGetInstanceStatus(account);
         if (newStatus === 'Unknown') {
-          await new Promise((r) => setTimeout(r, 500));
-          newStatus = await this.safeGetInstanceStatus(account);
+            newStatus = 'Pending';
+            apiStatusLog += '(状态Unknown,下一轮重试)';
         }
 
         if (newTraffic < 0) {
