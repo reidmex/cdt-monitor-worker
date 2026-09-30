@@ -203,16 +203,10 @@
                     <div v-if="item.cost && item.cost.enabled" class="flex justify-between items-center">
                       <span class="text-sm font-medium text-gray-500">本月费用</span>
                       <template v-if="!item.cost.error">
-                        <template v-if="Number(item.cost.monthly_cost) > 0.45">
-                          <span class="text-xs font-medium font-bold text-red-500">
-                            {{ item.cost.currency === 'USD' ? '$' : '¥' }}{{ Number(item.cost.monthly_cost).toFixed(2) }}
-                          </span>
-                        </template>
-                        <template v-else>
-                          <span class="text-xs font-medium font-bold text-green-600">
-                            {{ item.cost.currency === 'USD' ? '$' : '¥' }}{{ Number(item.cost.monthly_cost).toFixed(2) }}
-                          </span>
-                        </template>
+                        <span
+                          class="text-xs font-medium font-bold text-red-500">
+                          {{ item.cost.currency === 'USD' ? '$' : '¥' }}{{ Number(item.cost.monthly_cost).toFixed(2) }}
+                        </span>
                       </template>
                       <span v-else class="text-[10px] text-gray-400">{{ item.cost.error }}</span>
                     </div>
