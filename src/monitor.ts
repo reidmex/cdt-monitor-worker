@@ -229,7 +229,7 @@ export class Monitor {
             if (await this.safeControlInstance(account, 'start')) {
               actions.push('保活启动');
               await this.store.addLog('info', `执行保活启动 [${account.access_key_id}]`).catch(() => {});
-              const mailRes = await notifier.notifySchedule('保活启动', account, '检测到实例在工作时段非预期关机，已尝试自动启动。');
+              const mailRes = await notifier.notifySchedule('保活启动', account, '检测到实例在工作时段非预期关机，已尝试自动启动。').catch(() => undefined);
               await this.logNotificationResult(mailRes, account.access_key_id);
               await this.store.updateAccountStatus(account.id, traffic, 'Starting', currentTime).catch(() => {});
               status = 'Starting';
