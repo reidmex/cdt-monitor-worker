@@ -224,20 +224,8 @@ export default {
   },
 
   /** 每分钟触发 — 对应原版 cron monitor.php */
-  async scheduled(controller: any, env: Env, ctx: any): Promise<void> {
-    if (ctx && typeof ctx.waitUntil === 'function') {
-      // 核心优化：利用 waitUntil 将任务推入后台，允许消耗更多 CPU 时间
-      ctx.waitUntil(
-        runMonitor(env).catch(err => console.error("监控运行失败:", err))
-      );
-    } else {
-      // 备用降级方案
-      try {
-        await runMonitor(env);
-      } catch (err) {
-        console.error("监控备用方案运行失败:", err);
-      }
-    }
+  async scheduled(_event: any, env: Env, ctx: any): Promise<void> {
+    ctx.waitUntil(runMonitor(env));
   },
 };
 
@@ -245,13 +233,8 @@ async function runMonitor(env: Env): Promise<void> {
   const store = new Store(env.DB);
   await store.ensureSchema().catch(() => {});
   const monitor = new Monitor(store);
-  
-  // 定义一个 30 秒的超时限制
-  const timeout = new Promise<never>((_, reject) => setTimeout(() => reject(new Error("Timeout")), 30000));
-
   try {
-    // 让监控逻辑和超时赛跑，防止卡死
-    const output = await Promise.race([monitor.monitor(), timeout]);
+    const output = await monitor.monitor();
     console.log('[monitor]', output.replace(/\n/g, ' | ').slice(0, 2000));
   } catch (e: any) {
     console.error('[monitor] error:', e?.message || e);
