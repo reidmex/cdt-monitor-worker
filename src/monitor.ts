@@ -3,7 +3,7 @@
  */
 import type { Account } from './aliyun';
 import { AliyunClient } from './aliyun';
-import { Store, shanghaiTimeStr, shanghaiHourMinute, shanghaiMonth, shanghaiHM, shanghaiDate, fmtTime, shanghaiDayStart } from './store';
+import { Store, shanghaiTimeStr, shanghaiHourMinute, shanghaiMonth, shanghaiHM, shanghaiDate, fmtTime } from './store';
 import { Notifier } from './notify';
 
 const REGION_NAMES: Record<string, string> = {
@@ -85,17 +85,10 @@ export class Monitor {
     const settings = await this.store.getAllSettings();
     const notifier = new Notifier(settings);
 
-    const currentUserTime = shanghaiTimeStr();
-    const currentTime = Math.floor(Date.now() / 1000);
-
     // 清理
-    const lastPrune = Number(settings['last_prune_at'] || 0);
-    if (currentTime - lastPrune > 6 * 3600) {
-      await this.store.pruneLogs();
-      await this.store.pruneStats();
-      await this.store.pruneBillingCache();
-      await this.store.saveSetting('last_prune_at', currentTime);
-    }
+    await this.store.pruneLogs();
+    await this.store.pruneStats();
+    await this.store.pruneBillingCache();
 
     // 每天 04:00 清理旧登录尝试（对应原版 VACUUM 时机的近似）
     const { h, m } = shanghaiHourMinute();
@@ -103,12 +96,8 @@ export class Monitor {
       await this.store.db.prepare('DELETE FROM login_attempts WHERE attempt_time < ?').bind(Math.floor(Date.now() / 1000) - 7 * 86400).run();
     }
 
-    if (h === '00' && m === '05') {
-      const yest = shanghaiDayStart(Math.floor(Date.now() / 1000) - 86400);
-      const n = await this.store.refreshDailyStats(yest);
-      if (n > 0) await this.store.addLog('info', `日统计物化完成，已汇总 ${n} 个账号`);
-    }
-
+    const currentUserTime = shanghaiTimeStr();
+    const currentTime = Math.floor(Date.now() / 1000);
     const threshold = parseInt(settings['traffic_threshold'] || '95', 10) || 95;
     const shutdownMode = settings['shutdown_mode'] || 'KeepCharging';
     const thresholdAction = settings['threshold_action'] || 'stop_and_notify';
@@ -117,10 +106,8 @@ export class Monitor {
 
     const accounts = await this.store.getAccounts();
     const logs: string[] = [];
-    let lastHb = await this.store.getLastHeartbeatTime();
 
     for (const account of accounts) {
-      try {
       const logPrefix = `[${account.access_key_id}]`;
       const actions: string[] = [];
       let forceRefresh = false;
@@ -135,8 +122,8 @@ export class Monitor {
         if (account.start_time && currentUserTime === account.start_time) {
           if (await this.safeControlInstance(account, 'start')) {
             actions.push('定时启动');
-            await this.store.addLog('info', `执行定时启动 [${account.access_key_id}]`).catch(() => {});
-            const mailRes = await notifier.notifySchedule('定时启动', account, '计划任务已触发，实例正在启动。').catch(() => undefined);
+            await this.store.addLog('info', `执行定时启动 [${account.access_key_id}]`);
+            const mailRes = await notifier.notifySchedule('定时启动', account, '计划任务已触发，实例正在启动。');
             await this.logNotificationResult(mailRes, account.access_key_id);
             forceRefresh = true;
             statusTransformed = true;
@@ -145,8 +132,8 @@ export class Monitor {
         if (account.stop_time && currentUserTime === account.stop_time) {
           if (await this.safeControlInstance(account, 'stop', shutdownMode)) {
             actions.push(`定时停止(${shutdownMode})`);
-            await this.store.addLog('info', `执行定时停止 [${account.access_key_id}]`).catch(() => {});
-            const mailRes = await notifier.notifySchedule('定时停止', account, '计划任务已触发，实例已停止。').catch(() => undefined);
+            await this.store.addLog('info', `执行定时停止 [${account.access_key_id}]`);
+            const mailRes = await notifier.notifySchedule('定时停止', account, '计划任务已触发，实例已停止。');
             await this.logNotificationResult(mailRes, account.access_key_id);
             forceRefresh = true;
             statusTransformed = true;
@@ -167,8 +154,8 @@ export class Monitor {
         const newTraffic = await this.safeGetTraffic(account);
         let newStatus = await this.safeGetInstanceStatus(account);
         if (newStatus === 'Unknown') {
-            newStatus = 'Pending';
-            apiStatusLog += '(状态Unknown,下一轮重试)';
+          await new Promise((r) => setTimeout(r, 500));
+          newStatus = await this.safeGetInstanceStatus(account);
         }
 
         if (newTraffic < 0) {
@@ -177,8 +164,8 @@ export class Monitor {
         } else {
           traffic = newTraffic;
           apiStatusLog = '已更新';
-          // 优化：hourly 只对值变化的账号落盘；daily 不再由巡检写入，改为每日 00:05 物化
-          await this.store.addHourlyStat(account.id, traffic, account.traffic_used).catch(() => {});
+          await this.store.addHourlyStat(account.id, traffic);
+          await this.store.addDailyStat(account.id, traffic);
         }
 
         if (newStatus === 'Unknown') {
@@ -189,7 +176,7 @@ export class Monitor {
           apiStatusLog += TRANSIENT_STATES.includes(newStatus) ? ' [过渡态]' : ' [稳定态]';
         }
 
-        await this.store.updateAccountStatus(account.id, traffic, newStatus, newUpdateTime).catch(() => {});
+        await this.store.updateAccountStatus(account.id, traffic, status, newUpdateTime);
       } else {
         const timeLeft = currentInterval - (currentTime - lastUpdate);
         apiStatusLog = `缓存(${timeLeft}s)`;
@@ -208,16 +195,16 @@ export class Monitor {
             if (status !== 'Stopped') {
               if (await this.safeControlInstance(account, 'stop', shutdownMode)) {
                 actions.push('超限关机');
-                await this.store.addLog('warning', `流量超限自动关机 [${account.access_key_id}] 使用率:${usagePercent}%`).catch(() => {});
-                await this.store.updateAccountStatus(account.id, traffic, 'Stopping', currentTime).catch(() => {});
+                await this.store.addLog('warning', `流量超限自动关机 [${account.access_key_id}] 使用率:${usagePercent}%`);
+                await this.store.updateAccountStatus(account.id, traffic, 'Stopping', currentTime);
                 status = 'Stopping';
               }
             }
           } else {
             actions.push('超限告警');
-            await this.store.addLog('warning', `流量超限触发告警 [${account.access_key_id}] 使用率:${usagePercent}%`).catch(() => {});
+            await this.store.addLog('warning', `流量超限触发告警 [${account.access_key_id}] 使用率:${usagePercent}%`);
           }
-          const mailRes = await notifier.sendTrafficWarning(account.access_key_id, traffic, usagePercent, actions.join(',') || '超限', threshold).catch(() => undefined);
+          const mailRes = await notifier.sendTrafficWarning(account.access_key_id, traffic, usagePercent, actions.join(',') || '超限', threshold);
           await this.logNotificationResult(mailRes, account.access_key_id);
         }
       }
@@ -228,10 +215,10 @@ export class Monitor {
           if (status === 'Stopped') {
             if (await this.safeControlInstance(account, 'start')) {
               actions.push('保活启动');
-              await this.store.addLog('info', `执行保活启动 [${account.access_key_id}]`).catch(() => {});
-              const mailRes = await notifier.notifySchedule('保活启动', account, '检测到实例在工作时段非预期关机，已尝试自动启动。').catch(() => undefined);
+              await this.store.addLog('info', `执行保活启动 [${account.access_key_id}]`);
+              const mailRes = await notifier.notifySchedule('保活启动', account, '检测到实例在工作时段非预期关机，已尝试自动启动。');
               await this.logNotificationResult(mailRes, account.access_key_id);
-              await this.store.updateAccountStatus(account.id, traffic, 'Starting', currentTime).catch(() => {});
+              await this.store.updateAccountStatus(account.id, traffic, 'Starting', currentTime);
               status = 'Starting';
             } else {
               apiStatusLog += ' [保活启动失败,下次重试]';
@@ -242,23 +229,18 @@ export class Monitor {
 
       if (statusTransformed) {
         const tempStatus = actions.includes('定时启动') ? 'Starting' : 'Stopping';
-        await this.store.updateAccountStatus(account.id, traffic, tempStatus, currentTime).catch(() => {});
+        await this.store.updateAccountStatus(account.id, traffic, tempStatus, currentTime);
         apiStatusLog += ' -> 强制过渡态';
       }
 
       const actionLog = actions.length ? actions.join(', ') : '无动作';
       const logLine = `${logPrefix} ${actionLog} | ${trafficDesc} | ${status} | ${apiStatusLog}`;
       // 心跳日志降频：有动作立即记；无动作时 5 分钟记一条（原版每分钟记，但 D1 按行计费，降频可大幅减少读写量）
-      // const lastHb = await this.store.getLastHeartbeatTime();
+      const lastHb = await this.store.getLastHeartbeatTime();
       if (actions.length > 0 || currentTime - lastHb >= 300) {
-        await this.store.addLog('heartbeat', logLine).catch(() => {});
-        lastHb = currentTime;
+        await this.store.addLog('heartbeat', logLine);
       }
       logs.push(logLine);
-      } catch (e: any) {  // 👇 捕获，记日志，继续下一个账号
-      await this.store.addLog('error', `账号 ${account.access_key_id} 处理异常: ${e?.message || e}`).catch(() => {});
-      continue;
-    }
     }
 
     await this.store.updateLastRunTime(currentTime);
@@ -292,15 +274,13 @@ export class Monitor {
           await new Promise((r) => setTimeout(r, 500));
           newStatus = await this.safeGetInstanceStatus(account);
         }
-
         if (newTraffic >= 0) {
           traffic = newTraffic;
-          // 优化：hourly 去重 + daily 不在读取路径写入
-          await this.store.addHourlyStat(account.id, traffic, account.traffic_used);
+          await this.store.addHourlyStat(account.id, traffic);
+          await this.store.addDailyStat(account.id, traffic);
         } else {
           newUpdateTime = lastUpdate;
         }
-        
         if (newStatus === 'Unknown') newUpdateTime = lastUpdate;
         else status = newStatus;
         await this.store.updateAccountStatus(account.id, traffic, status, newUpdateTime);
@@ -340,11 +320,11 @@ export class Monitor {
     const traffic = await this.safeGetTraffic(target);
     const status = await this.safeGetInstanceStatus(target);
     let finalTraffic = traffic;
-
     if (traffic < 0) {
       finalTraffic = target.traffic_used;
     } else {
-      await this.store.addHourlyStat(id, traffic, target.traffic_used);
+      await this.store.addHourlyStat(id, traffic);
+      await this.store.addDailyStat(id, traffic);
     }
     await this.store.updateAccountStatus(id, finalTraffic, status, currentTime);
 
@@ -401,7 +381,7 @@ export class Monitor {
       // 手动关机不会被保活撤销，应放行
       const inScheduleWindow =
         account.schedule_enabled == 1 && isTimeInRange(shanghaiTimeStr(), account.start_time, account.stop_time);
-      const keepAliveActive = inScheduleWindow;
+     const keepAliveActive = inScheduleWindow;
       if (keepAliveActive) {
         await this.store.addLog('warning', `拒绝手动关机请求 [${account.access_key_id}]: 实例保活功能已开启`);
         return { success: false, message: '操作被拒绝：当前开启了"实例保活"模式，不允许手动关机。' };
