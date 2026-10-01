@@ -297,9 +297,8 @@ export class Monitor {
       const item: any = {
         id: account.id,
         account: String(account.access_key_id).slice(0, 7) + '***',
-        const flowTotal = Number(account.max_traffic) || 0
-console.log('[DEBUG] flow_total raw:', account.max_traffic, '| parsed:', flowTotal, '| type:', typeof flowTotal)
-flow_total: flowTotal
+        console.log('[DEBUG] max_traffic:', account.max_traffic, '| type:', typeof account.max_traffic)
+        flow_total: Number(account.max_traffic) || 0
         flow_total: account.max_traffic,
         flow_used: Math.round(traffic * 100) / 100,
         percentageOfUse: usagePercent,
