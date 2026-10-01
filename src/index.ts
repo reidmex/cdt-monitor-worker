@@ -274,7 +274,7 @@ async function getConfigForFrontend(store: Store): Promise<any> {
     admin_password: settings['admin_password'] ? '********' : '',
     traffic_threshold: parseInt(settings['traffic_threshold'] || '95', 10) || 95,
     enable_schedule_email: settings['enable_schedule_email'] === '1',
-    shutdown_mode: settings['shutdown_mode'] || 'KeepCharging',
+    shutdown_mode: settings['shutdown_mode'] || 'StopCharging',
     threshold_action: settings['threshold_action'] || 'stop_and_notify',
     keep_alive: settings['keep_alive'] === '1',
     api_interval: parseInt(settings['api_interval'] || '600', 10) || 600,
@@ -335,7 +335,7 @@ async function saveConfig(store: Store, data: any): Promise<void> {
   if (data.admin_password && data.admin_password !== '********') await store.saveSetting('admin_password', data.admin_password);
   await store.saveSetting('traffic_threshold', data.traffic_threshold ?? 95);
   await store.saveSetting('enable_schedule_email', data.enable_schedule_email ? '1' : '0');
-  await store.saveSetting('shutdown_mode', data.shutdown_mode || 'KeepCharging');
+  await store.saveSetting('shutdown_mode', data.shutdown_mode || 'StopCharging');
   await store.saveSetting('threshold_action', data.threshold_action || 'stop_and_notify');
   await store.saveSetting('keep_alive', data.keep_alive ? '1' : '0');
   await store.saveSetting('api_interval', data.api_interval ?? 600);
