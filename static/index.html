@@ -105,7 +105,7 @@
 
 <body class="text-[#1C1C1E]">
 
-    <div id="app" v-cloak class="min-h-screen p-3 md:p-6 flex flex-col items-center">
+    <div id="app" v-cloak class="min-h-screen p-4 md:p-8 flex flex-col items-center">
 
         <div v-if="cronWarning && initialized && !criticalError"
             class="w-full max-w-5xl mb-6 bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-r-xl shadow-sm animate-fade-in">
@@ -126,7 +126,7 @@
             </div>
         </div>
 
-        <header class="w-full max-w-5xl flex justify-between items-center mb-4 px-2">
+        <header class="w-full max-w-5xl flex justify-between items-center mb-6 px-2">
             <div>
                 <h1 class="text-2xl font-bold tracking-tight text-[#1C1C1E]">CDT Monitor</h1>
                 <p class="text-xs font-semibold tracking-widest text-gray-400 uppercase mt-1">Status & Control</p>
@@ -140,7 +140,7 @@
         </header>
 
         <main v-if="initialized && !loading && !criticalError"
-            class="w-full max-w-5xl grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 animate-fade-in-up">
+            class="w-full max-w-5xl grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 animate-fade-in-up">
             <div v-for="(item, index) in statusData" :key="index"
                 class="glass-panel rounded-[32px] p-6 flex flex-col justify-between relative overflow-hidden group hover:shadow-2xl transition-all duration-500">
                 <div class="absolute top-0 right-0 p-6 opacity-50 flex gap-2">
