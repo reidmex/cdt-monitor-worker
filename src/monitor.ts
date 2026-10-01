@@ -111,6 +111,8 @@ export class Monitor {
     const accounts = await this.store.getAccounts();
     const logs: string[] = [];
 
+    const lastHb = await this.store.getLastHeartbeatTime();
+
     for (const account of accounts) {
       const logPrefix = `[${account.access_key_id}]`;
       const actions: string[] = [];
@@ -240,7 +242,7 @@ export class Monitor {
       const actionLog = actions.length ? actions.join(', ') : '无动作';
       const logLine = `${logPrefix} ${actionLog} | ${trafficDesc} | ${status} | ${apiStatusLog}`;
       // 心跳日志降频：有动作立即记；无动作时 5 分钟记一条（原版每分钟记，但 D1 按行计费，降频可大幅减少读写量）
-      const lastHb = await this.store.getLastHeartbeatTime();
+      const lastHb = lastHeartbeat;
       if (actions.length > 0 || currentTime - lastHb >= 300) {
         await this.store.addLog('heartbeat', logLine);
       }
