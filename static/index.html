@@ -475,8 +475,23 @@
                                     class="w-full glass-input rounded-xl px-4 py-2 text-sm">
                             </div>
 
-                            <div class="space-y-1">
+                            <div class="space-y-1 relative">
                                 <label class="text-xs font-medium text-gray-500 ml-2">接口调用频率</label>
+                                <div class="group relative flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                        stroke-width="1.5" stroke="currentColor"
+                                        class="w-3.5 h-3.5 text-gray-400 cursor-help hover:text-gray-600 transition-colors">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
+                                        </svg>
+                                        <div
+                                            class="tooltip-content absolute bottom-full mb-2 w-64 md:w-80 p-4 bg-[#1C1C1E]/95 backdrop-blur-md text-white text-xs rounded-2xl shadow-[0_8px_30px_rgba(0,0,0,0.3)] z-50 border border-gray-700 pointer-events-none text-left leading-relaxed">
+                                            控制更新状态和流量的频率。开关机操作触发时会自动加速至 1 分钟。
+                                            <div
+                                                class="absolute top-full left-10 md:left-1/2 md:-translate-x-1/2 -mt-2 border-8 border-transparent border-t-[#1C1C1E]/95">
+                                            </div>
+                                        </div>
+                                </div>
                                 <select v-model.number="config.api_interval"
                                     class="w-full glass-input rounded-xl px-4 py-2 text-sm appearance-none cursor-pointer">
                                     <option value="60">1 分钟 (高频)</option>
@@ -485,7 +500,6 @@
                                     <option value="600">10 分钟 (默认)</option>
                                     <option value="1800">30 分钟 (低频)</option>
                                 </select>
-                                <p class="text-[10px] text-gray-400 px-2 mt-1">控制更新状态和流量的频率。开关机操作触发时会自动加速至 1 分钟。</p>
                             </div>
 
                             <div class="space-y-1 relative">
