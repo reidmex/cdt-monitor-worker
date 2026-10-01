@@ -142,7 +142,7 @@
         <main v-if="initialized && !loading && !criticalError"
             class="w-full max-w-5xl grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 animate-fade-in-up">
             <div v-for="(item, index) in statusData" :key="index"
-                class="glass-panel rounded-[32px] p-6 flex flex-col justify-between relative overflow-hidden group hover:shadow-2xl transition-all duration-500">
+                class="glass-panel rounded-[24px] p-4 flex flex-col justify-between relative overflow-hidden group hover:shadow-2xl transition-all duration-500">
                 <div class="absolute top-0 right-0 p-6 opacity-50 flex gap-2">
                     <button v-if="isAdmin" @click="openChart(item.id, item.account)"
                         class="p-1 rounded-full hover:bg-white/50 text-gray-400 hover:text-blue-500 transition-colors mr-1"
@@ -169,7 +169,7 @@
                 </div>
 
                 <div>
-                    <div class="flex items-center gap-2 mb-4">
+                    <div class="flex items-center gap-2 mb-2">
                         <span
                             class="px-2 py-1 bg-gray-100/50 rounded-lg text-[10px] font-bold tracking-wider text-gray-500 uppercase border border-white/40">{{
                             item.regionName }}</span>
@@ -179,18 +179,18 @@
                     <h3 class="text-3xl font-extrabold tracking-tighter text-[#1C1C1E]">
                         {{ item.flow_used }} <span class="text-base font-medium text-gray-400">GB</span>
                     </h3>
-                    <div class="flex justify-between items-end mt-1">
+                    <div class="flex justify-between items-end mt-0.5">
                         <p class="text-xs font-semibold text-gray-400 uppercase tracking-wide">已用流量</p>
                         <p class="text-xs font-medium text-gray-400">{{ item.percentageOfUse }}% / {{ item.flow_total
                             }}G</p>
                     </div>
-                    <div class="w-full h-1.5 bg-gray-200/50 rounded-full mt-3 overflow-hidden">
+                    <div class="w-full h-1.5 bg-gray-200/50 rounded-full mt-2 overflow-hidden">
                         <div class="h-full rounded-full transition-all duration-1000 ease-out"
                             :class="item.rate95 ? 'bg-[#FF3B30]' : 'bg-[#1C1C1E]'"
                             :style="{ width: Math.min(item.percentageOfUse, 100) + '%' }"></div>
                     </div>
                 </div>
-                <div class="mt-6 pt-6 border-t border-gray-200/40 flex flex-col gap-2">
+                <div class="mt-3 pt-3 border-t border-gray-200/40 flex flex-col gap-1.5">
                     <div class="flex justify-between items-center">
                         <span class="text-sm font-medium text-gray-500">运行状态</span>
                         <span class="text-sm font-bold" :class="getInstanceStatusColor(item.instanceStatus)">{{
@@ -223,7 +223,7 @@
                     <!-- 新增：手工控制区域 (仅登录用户可见，且仅在 运行中/已停止 状态下显示) -->
                     <!-- 注意：这里增加了 item.instanceStatus 的判断，操作后状态变为 Pending 时会自动隐藏 -->
                     <div v-if="isAdmin && (item.instanceStatus === 'Running' || item.instanceStatus === 'Stopped')"
-                        class="flex justify-between items-center pt-2">
+                        class="flex justify-between items-center pt-1.5">
                         <span class="text-xs font-medium text-gray-400">手动控制</span>
 
                         <!-- 状态：运行中 -> 显示关机按钮 -->
