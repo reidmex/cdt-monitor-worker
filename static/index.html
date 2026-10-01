@@ -11,6 +11,14 @@
     <!-- 预编译的 Tailwind CSS v4 -->
     <link rel="stylesheet" href="tailwind-compiled.css">
 
+    <!-- 预编译的 Tailwind CSS v4 -->
+    <link rel="stylesheet" href="tailwind-compiled.css">
+
+    <!-- Google Fonts: Inter + Noto Sans SC -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+
     <style>
         [v-cloak] {
             display: none !important;
@@ -25,12 +33,39 @@
             scrollbar-width: none;
         }
 
+        /* 字体全局设置 */
+        body {
+            background-color: #F2F2F7;
+            font-family: 'Inter', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        }
+
+        /* 数字/账号等 monospace 也用 Inter */
+        .font-mono {
+            font-family: 'Inter', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+        }
+
         .glass-panel {
             background: rgba(255, 255, 255, 0.65);
             backdrop-filter: blur(40px);
             -webkit-backdrop-filter: blur(40px);
             border: 1px solid rgba(255, 255, 255, 0.6);
             box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02), 0 8px 32px rgba(0, 0, 0, 0.04), inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+            transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
+                        box-shadow 0.35s ease,
+                        background-color 0.35s ease,
+                        border-color 0.35s ease;
+            will-change: transform;
+        }
+
+        /* 高级悬浮效果 */
+        .glass-panel:hover {
+            transform: translateY(-4px);
+            background: rgba(255, 255, 255, 0.78);
+            border-color: rgba(255, 255, 255, 0.9);
+            box-shadow:
+                0 12px 40px rgba(0, 0, 0, 0.10),
+                0 4px 12px rgba(0, 0, 0, 0.05),
+                inset 0 1px 0 rgba(255, 255, 255, 0.6);
         }
 
         .glass-input {
@@ -83,10 +118,6 @@
         .dropdown-leave-to {
             opacity: 0;
             transform: translateY(-10px);
-        }
-
-        body {
-            background-color: #F2F2F7;
         }
 
         /* Chart Modal Animations */
@@ -142,7 +173,7 @@
         <main v-if="initialized && !loading && !criticalError"
             class="w-full max-w-5xl grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 animate-fade-in-up">
             <div v-for="(item, index) in statusData" :key="index"
-                class="glass-panel rounded-[32px] p-6 flex flex-col justify-between relative overflow-hidden group hover:shadow-2xl transition-all duration-500">
+                class="glass-panel rounded-[32px] p-4 flex flex-col justify-between relative overflow-hidden">
                 <div class="absolute top-0 right-0 p-6 opacity-50 flex gap-2">
                     <button v-if="isAdmin" @click="openChart(item.id, item.account)"
                         class="p-1 rounded-full hover:bg-white/50 text-gray-400 hover:text-blue-500 transition-colors mr-1"
