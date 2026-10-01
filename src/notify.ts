@@ -365,6 +365,7 @@ export class Notifier {
 
   async notifySchedule(actionType: string, account: any, description = ''): Promise<true | string> {
     // if ((this.cfg['enable_schedule_email'] ?? '0') !== '1') return true;
+    if ((this.cfg['enable_schedule_email'] ?? '0') !== '1' && (this.cfg['notify_tg_enabled'] ?? '0') !== '1' && (this.cfg['notify_wh_enabled'] ?? '0') !== '1') return true;
     const title = '定时任务: ' + actionType;
     const maskedKey = String(account.access_key_id).slice(0, 7) + '***';
     const traffic = account.traffic_used != null ? Math.round(account.traffic_used * 100) / 100 : 'N/A';
