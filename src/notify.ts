@@ -193,7 +193,6 @@ export async function sendWebhook(
   cfg: NotifyConfig,
   override?: any,
 ): Promise<true | string> {
-  console.log('SEND WEBHOOK', { text, title, summary });
   const url = override?.url || cfg['notify_wh_url'] || '';
   const method = (override?.method || cfg['notify_wh_method'] || 'GET').toUpperCase();
   const requestType = (override?.request_type || cfg['notify_wh_request_type'] || 'JSON').toUpperCase();
@@ -268,8 +267,6 @@ export async function sendWebhook(
         customHeaders.push('Content-Type: application/x-www-form-urlencoded');
       }
     }
-
-    console.log('WEBHOOK BODY', finalBody);
 
     const resp = await fetch(urlReplaced, {
       method: 'POST',
@@ -355,9 +352,7 @@ export class Notifier {
     // Webhook
     if ((this.cfg['notify_wh_enabled'] ?? '0') === '1' && this.cfg['notify_wh_url']) {
       attempt++;
-      // const res = await sendWebhook(textMsg, title, summary, details, accountId, this.cfg);
-      console.log('WEBHOOK PARAM', { textMsg, title, summary });
-      const res = await sendWebhook('TEST_TEXTMSG_123', title, summary, details, accountId, this.cfg);
+      const res = await sendWebhook(textMsg, title, summary, details, accountId, this.cfg);
       if (res === true) success++;
       else errors.push('WH: ' + res);
     }
@@ -369,9 +364,7 @@ export class Notifier {
   }
 
   async notifySchedule(actionType: string, account: any, description = ''): Promise<true | string> {
-    // if ((this.cfg['enable_schedule_email'] ?? '0') !== '1') return true;
-    console.log('notifySchedule NEW CODE');
-    if ((this.cfg['enable_schedule_email'] ?? '0') !== '1' && (this.cfg['notify_tg_enabled'] ?? '0') !== '1' && (this.cfg['notify_wh_enabled'] ?? '0') !== '1') return true;
+    if ((this.cfg['enable_schedule_email'] ?? '0') !== '1') return true;
     const title = '定时任务: ' + actionType;
     const maskedKey = String(account.access_key_id).slice(0, 7) + '***';
     const traffic = account.traffic_used != null ? Math.round(account.traffic_used * 100) / 100 : 'N/A';
