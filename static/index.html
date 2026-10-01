@@ -142,7 +142,7 @@
         <main v-if="initialized && !loading && !criticalError"
             class="w-full max-w-5xl grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 animate-fade-in-up">
             <div v-for="(item, index) in statusData" :key="index"
-                class="glass-panel rounded-[32px] p-4 flex flex-col justify-between relative overflow-hidden group hover:shadow-2xl transition-all duration-500">
+                class="glass-panel rounded-[32px] p-4 flex flex-col justify-between relative overflow-hidden group hover:shadow-2xl hover:-translate-y-1.5 hover:bg-white/[0.75] hover:border-white/80 transition-all duration-300">
                 <div class="absolute top-0 right-0 p-6 opacity-50 flex gap-2">
                     <button v-if="isAdmin" @click="openChart(item.id, item.account)"
                         class="p-1 rounded-full hover:bg-white/50 text-gray-400 hover:text-blue-500 transition-colors mr-1"
