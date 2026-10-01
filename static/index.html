@@ -34,9 +34,15 @@
             text-rendering: optimizeLegibility;
         }
 
-        h1, h2, h3 {
+        /* 20px 及以上的文字用灰度锐化（大数字、大标题） */
+        .text-2xl, .text-3xl, .text-4xl, .text-5xl, .text-6xl {
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
+        }
+
+        .glass-panel p,
+        .glass-panel span {
+            transform: translateZ(0);
         }
 
         .glass-panel p,
