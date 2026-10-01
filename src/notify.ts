@@ -211,7 +211,7 @@ export async function sendWebhook(
 
   const replacePairs: Record<string, string> = {
     '#TITLE#': title,
-    '#MSG#': summary || text,
+    '#MSG#': text || summary,
     '#ACCOUNT#': accountId,
     '#TRAFFIC#': traffic,
     '#MAX_TRAFFIC#': maxTraffic,
