@@ -209,10 +209,10 @@ export class Store {
   }
 
   async updateAccountStatus(id: number, traffic: number, status: string, updatedAt: number): Promise<void> {
-    await this.db
-      .prepare('UPDATE accounts SET traffic_used=?, instance_status=?, updated_at=? WHERE id=?')
-      .bind(traffic, status, updatedAt, id)
-      .run();
+  await this.db
+    .prepare('UPDATE accounts SET traffic_used=?, instance_status=?, updated_at=? WHERE id=? AND (traffic_used!=? OR instance_status!=?)')
+    .bind(traffic, status, updatedAt, id, traffic, status)
+    .run();
   }
 
   async updateLastKeepAlive(id: number, t: number): Promise<void> {
