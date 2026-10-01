@@ -352,7 +352,8 @@ export class Notifier {
     // Webhook
     if ((this.cfg['notify_wh_enabled'] ?? '0') === '1' && this.cfg['notify_wh_url']) {
       attempt++;
-      const res = await sendWebhook(textMsg, title, summary, details, accountId, this.cfg);
+      // const res = await sendWebhook(textMsg, title, summary, details, accountId, this.cfg);
+      const res = await sendWebhook('TEST_TEXTMSG_123', title, summary, details, accountId, this.cfg);
       if (res === true) success++;
       else errors.push('WH: ' + res);
     }
