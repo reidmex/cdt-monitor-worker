@@ -270,7 +270,8 @@ async function getConfigForFrontend(store: Store): Promise<any> {
   const accounts = await store.getAccounts();
 
   const config: any = {
-    admin_password: settings['admin_password'] || '',
+    //admin_password: settings['admin_password'] || '',
+    admin_password: settings['admin_password'] ? '********' : '',
     traffic_threshold: parseInt(settings['traffic_threshold'] || '95', 10) || 95,
     enable_schedule_email: settings['enable_schedule_email'] === '1',
     shutdown_mode: settings['shutdown_mode'] || 'KeepCharging',
@@ -330,7 +331,8 @@ async function getConfigForFrontend(store: Store): Promise<any> {
 
 async function saveConfig(store: Store, data: any): Promise<void> {
   // 全局设置
-  await store.saveSetting('admin_password', data.admin_password || '');
+  // await store.saveSetting('admin_password', data.admin_password || '');
+  if (data.admin_password && data.admin_password !== '********') await store.saveSetting('admin_password', data.admin_password);
   await store.saveSetting('traffic_threshold', data.traffic_threshold ?? 95);
   await store.saveSetting('enable_schedule_email', data.enable_schedule_email ? '1' : '0');
   await store.saveSetting('shutdown_mode', data.shutdown_mode || 'KeepCharging');
