@@ -193,6 +193,7 @@ export async function sendWebhook(
   cfg: NotifyConfig,
   override?: any,
 ): Promise<true | string> {
+  console.log('SEND WEBHOOK', { text, title, summary });
   const url = override?.url || cfg['notify_wh_url'] || '';
   const method = (override?.method || cfg['notify_wh_method'] || 'GET').toUpperCase();
   const requestType = (override?.request_type || cfg['notify_wh_request_type'] || 'JSON').toUpperCase();
@@ -267,6 +268,8 @@ export async function sendWebhook(
         customHeaders.push('Content-Type: application/x-www-form-urlencoded');
       }
     }
+
+    console.log('WEBHOOK BODY', finalBody);
 
     const resp = await fetch(urlReplaced, {
       method: 'POST',
