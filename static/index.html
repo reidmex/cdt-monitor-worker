@@ -225,7 +225,7 @@
                     </h3>
                     <div class="flex justify-between items-end mt-0.5">
                         <p class="text-xs font-semibold text-gray-400 uppercase tracking-wide">已用流量</p>
-                        <p class="text-xs font-medium text-gray-400">{{ item.percentageOfUse }}% / {{ item.flow_total
+                        <p class="text-xs font-medium text-gray-400">{{ item.percentageOfUse }}% / {{ Number(item.flow_total).toFixed(2)
                             }}G</p>
                     </div>
                     <div class="w-full h-1.5 bg-gray-200/50 rounded-full mt-2 overflow-hidden">
