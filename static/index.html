@@ -269,6 +269,12 @@
                         <span class="text-sm font-bold text-gray-400">阈值</span>
                         <span class="text-sm font-bold text-gray-400">{{ item.threshold }}%</span>
                     </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm font-bold text-gray-400">模式</span>
+                        <span class="text-sm font-bold" :class="item.scheduleEnabled ? 'text-blue-600' : 'text-gray-400'">
+                            {{ item.scheduleEnabled ? `自动 (${item.scheduleStart}-${item.scheduleStop})` : '手动' }}
+                        </span>
+                    </div>
 
                     <!-- 新增：手工控制区域 (仅登录用户可见，且仅在 运行中/已停止 状态下显示) -->
                     <!-- 注意：这里增加了 item.instanceStatus 的判断，操作后状态变为 Pending 时会自动隐藏 -->
