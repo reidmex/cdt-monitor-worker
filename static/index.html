@@ -320,6 +320,10 @@
                             开机
                         </button>
                     </div>
+                    <!-- 自动模式：占位保持高度，不显示按钮 -->
+                    <div v-else-if="isAdmin" class="flex justify-end items-center pt-2">
+                        <span class="text-xs text-gray-300"></span>
+                    </div>
                 </div>
                 <div v-if="statusData.length === 0" class="col-span-full py-20 text-center text-gray-400">
                     <p>暂无监控账号，请点击右上角登录管理员添加。</p>
