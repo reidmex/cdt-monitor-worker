@@ -280,7 +280,6 @@
                     <!-- 注意：这里增加了 item.instanceStatus 的判断，操作后状态变为 Pending 时会自动隐藏 -->
                     <div v-if="isAdmin && (item.instanceStatus === 'Running' || item.instanceStatus === 'Stopped')"
                         class="flex justify-between items-center pt-2">
-                        <span class="text-sm font-bold text-gray-400">手动</span>
 
                         <!-- 状态：运行中 -> 显示关机按钮 -->
                         <button v-if="item.instanceStatus === 'Running'" @click="toggleInstance(item.id, 'Stop', index)"
