@@ -265,7 +265,7 @@
                       <template v-if="!item.cost.error">
                         <span
                           class="text-sm font-extrabold"
-                          :class="Number(item.cost.monthly_cost) >= 0.45 ? 'text-red-500' : 'text-green-500'">
+                          :class="Number(item.cost.monthly_cost) >= 0.45 ? 'text-rose-600' : 'text-emerald-600'">
                           {{ item.cost.currency === 'USD' ? '$' : '¥' }}{{ Number(item.cost.monthly_cost).toFixed(2) }}
                         </span>
                       </template>
