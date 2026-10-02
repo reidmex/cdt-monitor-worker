@@ -278,8 +278,10 @@
 
                     <!-- 新增：手工控制区域 (仅登录用户可见，且仅在 运行中/已停止 状态下显示) -->
                     <!-- 注意：这里增加了 item.instanceStatus 的判断，操作后状态变为 Pending 时会自动隐藏 -->
-                    <div v-if="isAdmin" class="flex justify-end items-center pt-2">
-                    <template v-if="!item.scheduleEnabled && (item.instanceStatus === 'Running' || item.instanceStatus === 'Stopped')">
+                    <div v-if="isAdmin && (item.instanceStatus === 'Running' || item.instanceStatus === 'Stopped')"
+                        class="flex justify-between items-center pt-2">
+                        <span class="text-sm font-bold text-gray-400">手动</span>
+
                         <!-- 状态：运行中 -> 显示关机按钮 -->
                         <button v-if="item.instanceStatus === 'Running'" @click="toggleInstance(item.id, 'Stop', index)"
                             :disabled="item.isOperating"
@@ -318,7 +320,6 @@
                             </svg>
                             开机
                         </button>
-                    </template>
                     </div>
                 </div>
                 <div v-if="statusData.length === 0" class="col-span-full py-20 text-center text-gray-400">
