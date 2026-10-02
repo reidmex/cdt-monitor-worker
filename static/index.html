@@ -278,7 +278,7 @@
 
                     <!-- 新增：手工控制区域 (仅登录用户可见，且仅在 运行中/已停止 状态下显示) -->
                     <!-- 注意：这里增加了 item.instanceStatus 的判断，操作后状态变为 Pending 时会自动隐藏 -->
-                    <div v-if="isAdmin && (item.instanceStatus === 'Running' || item.instanceStatus === 'Stopped')"
+                    <div v-if="isAdmin && !item.scheduleEnabled && (item.instanceStatus === 'Running' || item.instanceStatus === 'Stopped')"
                         class="flex justify-end items-center pt-2">
 
                         <!-- 状态：运行中 -> 显示关机按钮 -->
@@ -320,7 +320,12 @@
                             开机
                         </button>
                     </div>
-                </div>
+                    <div v-else-if="isAdmin" class="flex justify-end items-center pt-2">
+                        <span class="text-xs font-bold text-gray-400 bg-gray-100/80 border border-gray-200 rounded-lg px-3 py-1">
+                            托管中
+                        </span>
+                    </div>
+                </div>                
                 <div v-if="statusData.length === 0" class="col-span-full py-20 text-center text-gray-400">
                     <p>暂无监控账号，请点击右上角登录管理员添加。</p>
                 </div>
