@@ -248,7 +248,7 @@
                     <div class="flex justify-between items-center">
                         <span class="text-sm font-bold text-gray-500">状态</span>
                         <span class="text-sm font-bold" :class="getInstanceStatusColor(item.instanceStatus)">
-                            {{ item.instanceStatus === 'Stopped' ? '已停止' : item.instanceStatus === 'Running' ? '运行中' : item.instanceStatus }}
+                            {{ item.instanceStatus === 'Stopped' ? '已停止' : item.instanceStatus === 'Running' ? '运行中' : item.instanceStatus === 'Pending' ? '处理中' : item.instanceStatus }}
                         </span>
                     </div>
                     <div class="flex justify-between items-center">
