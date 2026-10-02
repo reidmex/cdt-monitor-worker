@@ -246,16 +246,16 @@
                 </div>
                 <div class="mt-3 pt-3 flex flex-col gap-2">
                     <div class="flex justify-between items-center">
-                        <span class="text-sm font-bold text-gray-600 ">状态</span>
+                        <span class="text-sm font-bold text-gray-500 ">状态</span>
                         <span class="text-sm font-bold" :class="getInstanceStatusColor(item.instanceStatus)">{{
                             item.instanceStatus }}</span>
                     </div>
                     <div class="flex justify-between items-center">
-                        <span class="text-sm font-bold text-gray-600 ">账号</span>
+                        <span class="text-sm font-bold text-gray-500 ">账号</span>
                         <span class="text-sm font-medium text-[#1C1C1E] font-mono">{{ item.account }}</span>
                     </div>
                     <div v-if="item.cost && item.cost.enabled" class="flex justify-between items-center">
-                      <span class="text-sm font-bold text-gray-600 ">费用</span>
+                      <span class="text-sm font-bold text-gray-500 ">费用</span>
                       <template v-if="!item.cost.error">
                         <span
                           class="text-sm font-extrabold"
@@ -266,7 +266,7 @@
                       <span v-else class="text-[10px] text-gray-400">{{ item.cost.error }}</span>
                     </div>
                     <div v-if="item.remark" class="flex justify-between items-center">
-                        <span class="text-sm font-bold text-gray-600 ">备注</span>
+                        <span class="text-sm font-bold text-gray-500 ">备注</span>
                         <span class="text-sm font-medium text-[#1C1C1E]">{{ item.remark }}</span>
                     </div>
                     <div class="flex justify-between items-center">
@@ -466,19 +466,19 @@
                         <h3 class="text-sm font-bold uppercase tracking-widest mb-4">全局设置</h3>
                         <div class="space-y-3">
                             <div class="space-y-1">
-                                <label class="text-xs font-bold text-gray-600 ml-2">管理员密码</label>
+                                <label class="text-xs font-bold text-gray-500 ml-2">管理员密码</label>
                                 <input v-model="config.admin_password" type="password"
                                     class="w-full glass-input rounded-xl px-4 py-2 text-sm">
                             </div>
                             <div class="space-y-1">
-                                <label class="text-xs font-bold text-gray-600 ml-2">流量告警阈值 (%)</label>
+                                <label class="text-xs font-bold text-gray-500 ml-2">流量告警阈值 (%)</label>
                                 <input v-model.number="config.traffic_threshold" type="number" min="1" max="100"
                                     class="w-full glass-input rounded-xl px-4 py-2 text-sm">
                             </div>
 
                             <div class="space-y-1 relative">
                                 <div class="flex items-center gap-1">
-                                    <label class="text-xs font-bold text-gray-600 ml-2">接口调用频率</label>
+                                    <label class="text-xs font-bold text-gray-500 ml-2">接口调用频率</label>
                                     <div class="group relative flex items-center">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                             stroke-width="1.5" stroke="currentColor"
@@ -507,7 +507,7 @@
 
                             <div class="space-y-1 relative">
                                 <div class="flex items-center gap-1">
-                                    <label class="text-xs font-bold text-gray-600 ml-2">停机模式</label>
+                                    <label class="text-xs font-bold text-gray-500 ml-2">停机模式</label>
                                     <div class="group relative flex items-center">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                             stroke-width="1.5" stroke="currentColor"
@@ -543,7 +543,7 @@
                             </div>
 
                             <div class="space-y-1">
-                                <label class="text-xs font-bold text-gray-600 ml-2">流量阈值动作</label>
+                                <label class="text-xs font-bold text-gray-500 ml-2">流量阈值动作</label>
                                 <select v-model="config.threshold_action"
                                     class="w-full glass-input rounded-xl px-4 py-2 text-sm appearance-none cursor-pointer">
                                     <option value="stop_and_notify">自动关机并告警 (默认)</option>
@@ -553,7 +553,7 @@
 
                             <div class="flex items-center justify-between pt-2">
                                 <div class="flex items-center gap-1">
-                                    <label class="text-xs font-bold text-gray-600 ml-2">实例保活 (抢占式)</label>
+                                    <label class="text-xs font-bold text-gray-500 ml-2">实例保活 (抢占式)</label>
                                     <div class="group relative flex items-center">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                             stroke-width="1.5" stroke="currentColor"
@@ -583,7 +583,7 @@
                             </div>
 
                             <div class="flex items-center justify-between pt-2">
-                                <label class="text-xs font-bold text-gray-600 ml-2">定时任务邮件通知</label>
+                                <label class="text-xs font-bold text-gray-500 ml-2">定时任务邮件通知</label>
                                 <div class="relative inline-block w-10 mr-2">
                                     <input type="checkbox" v-model="config.enable_schedule_email" id="toggle-sched"
                                         class="peer sr-only" />
@@ -597,7 +597,7 @@
 
                             <div class="flex items-center justify-between pt-2">
                                 <div class="flex items-center gap-1">
-                                    <label class="text-xs font-bold text-gray-600 ml-2">成本分析 (BSS)</label>
+                                    <label class="text-xs font-bold text-gray-500 ml-2">成本分析 (BSS)</label>
                                     <div class="group relative flex items-center">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                             stroke-width="1.5" stroke="currentColor"
@@ -667,18 +667,18 @@
                                 </div>
                             </div>
                             <div class="space-y-1">
-                                <label class="text-xs font-bold text-gray-600  ml-2">SMTP Host</label>
+                                <label class="text-xs font-bold text-gray-500  ml-2">SMTP Host</label>
                                 <input v-model="config.Notification.host"
                                     class="w-full glass-input rounded-xl px-4 py-2 text-sm">
                             </div>
                             <div class="grid grid-cols-2 gap-3">
                                 <div class="space-y-1">
-                                    <label class="text-xs font-bold text-gray-600  ml-2">Port</label>
+                                    <label class="text-xs font-bold text-gray-500  ml-2">Port</label>
                                     <input v-model.number="config.Notification.port" type="number"
                                         class="w-full glass-input rounded-xl px-4 py-2 text-sm">
                                 </div>
                                 <div class="space-y-1">
-                                    <label class="text-xs font-bold text-gray-600  ml-2">Secure</label>
+                                    <label class="text-xs font-bold text-gray-500  ml-2">Secure</label>
                                     <select v-model="config.Notification.secure"
                                         class="w-full glass-input rounded-xl px-4 py-2 text-sm appearance-none cursor-pointer">
                                         <option value="ssl">SSL</option>
@@ -688,17 +688,17 @@
                                 </div>
                             </div>
                             <div class="space-y-1">
-                                <label class="text-xs font-bold text-gray-600  ml-2">Username</label>
+                                <label class="text-xs font-bold text-gray-500  ml-2">Username</label>
                                 <input v-model="config.Notification.username"
                                     class="w-full glass-input rounded-xl px-4 py-2 text-sm">
                             </div>
                             <div class="space-y-1">
-                                <label class="text-xs font-bold text-gray-600  ml-2">Password</label>
+                                <label class="text-xs font-bold text-gray-500  ml-2">Password</label>
                                 <input v-model="config.Notification.password" type="password"
                                     class="w-full glass-input rounded-xl px-4 py-2 text-sm">
                             </div>
                             <div class="space-y-1">
-                                <label class="text-xs font-bold text-gray-600  ml-2">Receiver Email</label>
+                                <label class="text-xs font-bold text-gray-500  ml-2">Receiver Email</label>
                                 <input v-model="config.Notification.email"
                                     class="w-full glass-input rounded-xl px-4 py-2 text-sm">
                             </div>
@@ -726,17 +726,17 @@
                                 </div>
                             </div>
                             <div class="space-y-1">
-                                <label class="text-xs font-bold text-gray-600  ml-2">Bot Token</label>
+                                <label class="text-xs font-bold text-gray-500  ml-2">Bot Token</label>
                                 <input v-model="config.Notification.telegram.token" placeholder="来自 @BotFather"
                                     class="w-full glass-input rounded-xl px-4 py-2 text-sm">
                             </div>
                             <div class="space-y-1">
-                                <label class="text-xs font-bold text-gray-600  ml-2">Chat ID</label>
+                                <label class="text-xs font-bold text-gray-500  ml-2">Chat ID</label>
                                 <input v-model="config.Notification.telegram.chat_id" placeholder="数字 ID"
                                     class="w-full glass-input rounded-xl px-4 py-2 text-sm">
                             </div>
                             <div class="space-y-1">
-                                <label class="text-xs font-bold text-gray-600  ml-2">代理服务器类型</label>
+                                <label class="text-xs font-bold text-gray-500  ml-2">代理服务器类型</label>
                                 <select v-model="config.Notification.telegram.proxy_type"
                                     class="w-full glass-input rounded-xl px-4 py-2 text-sm appearance-none cursor-pointer">
                                     <option value="none">不使用代理</option>
@@ -747,7 +747,7 @@
 
                             <div v-if="config.Notification.telegram.proxy_type === 'custom'"
                                 class="space-y-1 animate-fade-in">
-                                <label class="text-xs font-bold text-gray-600  ml-2">自定义反代 URL</label>
+                                <label class="text-xs font-bold text-gray-500  ml-2">自定义反代 URL</label>
                                 <input v-model="config.Notification.telegram.proxy_url"
                                     placeholder="默认: https://api.telegram.org"
                                     class="w-full glass-input rounded-xl px-4 py-2 text-sm">
@@ -756,22 +756,22 @@
                             <div v-if="config.Notification.telegram.proxy_type === 'socks5'"
                                 class="grid grid-cols-2 gap-3 animate-fade-in">
                                 <div class="space-y-1">
-                                    <label class="text-xs font-bold text-gray-600  ml-2">代理 IP</label>
+                                    <label class="text-xs font-bold text-gray-500  ml-2">代理 IP</label>
                                     <input v-model="config.Notification.telegram.proxy_ip" placeholder="127.0.0.1"
                                         class="w-full glass-input rounded-xl px-4 py-2 text-sm">
                                 </div>
                                 <div class="space-y-1">
-                                    <label class="text-xs font-bold text-gray-600  ml-2">代理端口</label>
+                                    <label class="text-xs font-bold text-gray-500  ml-2">代理端口</label>
                                     <input v-model="config.Notification.telegram.proxy_port" placeholder="1080"
                                         class="w-full glass-input rounded-xl px-4 py-2 text-sm">
                                 </div>
                                 <div class="space-y-1">
-                                    <label class="text-xs font-bold text-gray-600  ml-2">代理账号</label>
+                                    <label class="text-xs font-bold text-gray-500  ml-2">代理账号</label>
                                     <input v-model="config.Notification.telegram.proxy_user" placeholder="留空无验证"
                                         class="w-full glass-input rounded-xl px-4 py-2 text-sm">
                                 </div>
                                 <div class="space-y-1">
-                                    <label class="text-xs font-bold text-gray-600  ml-2">代理密码</label>
+                                    <label class="text-xs font-bold text-gray-500  ml-2">代理密码</label>
                                     <input v-model="config.Notification.telegram.proxy_pass" type="password"
                                         placeholder="留空无验证" class="w-full glass-input rounded-xl px-4 py-2 text-sm">
                                 </div>
@@ -800,14 +800,14 @@
                                 </div>
                             </div>
                             <div class="space-y-1">
-                                <label class="text-xs font-bold text-gray-600  ml-2">Webhook URL</label>
+                                <label class="text-xs font-bold text-gray-500  ml-2">Webhook URL</label>
                                 <input v-model="config.Notification.webhook.url"
                                     placeholder="http://example.com/api/notify"
                                     class="w-full glass-input rounded-xl px-4 py-2 text-sm">
                             </div>
                             <div class="grid grid-cols-2 gap-3">
                                 <div class="space-y-1">
-                                    <label class="text-xs font-bold text-gray-600  ml-2">请求方式 (Method)</label>
+                                    <label class="text-xs font-bold text-gray-500  ml-2">请求方式 (Method)</label>
                                     <select v-model="config.Notification.webhook.method"
                                         class="w-full glass-input rounded-xl px-4 py-2 text-sm appearance-none cursor-pointer">
                                         <option value="GET">GET</option>
@@ -815,7 +815,7 @@
                                     </select>
                                 </div>
                                 <div class="space-y-1" v-if="config.Notification.webhook.method === 'POST'">
-                                    <label class="text-xs font-bold text-gray-600  ml-2">请求类型 (Type)</label>
+                                    <label class="text-xs font-bold text-gray-500  ml-2">请求类型 (Type)</label>
                                     <select v-model="config.Notification.webhook.request_type"
                                         class="w-full glass-input rounded-xl px-4 py-2 text-sm appearance-none cursor-pointer">
                                         <option value="JSON">JSON</option>
@@ -866,22 +866,22 @@
 
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div class="space-y-1">
-                                        <label class="text-xs font-bold text-gray-600  ml-2">AccessKey ID</label>
+                                        <label class="text-xs font-bold text-gray-500  ml-2">AccessKey ID</label>
                                         <input v-model="acc.AccessKeyId"
                                             class="w-full glass-input rounded-xl px-4 py-2 text-sm">
                                     </div>
                                     <div class="space-y-1">
-                                        <label class="text-xs font-bold text-gray-600  ml-2">AccessKey Secret</label>
+                                        <label class="text-xs font-bold text-gray-500  ml-2">AccessKey Secret</label>
                                         <input v-model="acc.AccessKeySecret" type="password"
                                             class="w-full glass-input rounded-xl px-4 py-2 text-sm">
                                     </div>
                                     <div class="space-y-1">
-                                        <label class="text-xs font-bold text-gray-600  ml-2">Instance ID</label>
+                                        <label class="text-xs font-bold text-gray-500  ml-2">Instance ID</label>
                                         <input v-model="acc.instanceId" placeholder="实例 ID (必填)"
                                             class="w-full glass-input rounded-xl px-4 py-2 text-sm">
                                     </div>
                                     <div class="space-y-1 relative">
-                                        <label class="text-xs font-bold text-gray-600  ml-2">Region ID</label>
+                                        <label class="text-xs font-bold text-gray-500  ml-2">Region ID</label>
                                         <input v-model="acc.regionId" @focus="regionSearchFocus = idx"
                                             @blur="setTimeout(() => regionSearchFocus = -1, 200)"
                                             placeholder="输入地域名称或代码..."
@@ -908,7 +908,7 @@
                                         </transition>
                                     </div>
                                     <div class="space-y-1">
-                                        <label class="text-xs font-bold text-gray-600  ml-2">Max Traffic (GB)</label>
+                                        <label class="text-xs font-bold text-gray-500  ml-2">Max Traffic (GB)</label>
                                         <input v-model.number="acc.maxTraffic" type="number"
                                             class="w-full glass-input rounded-xl px-4 py-2 text-sm">
                                     </div>
@@ -916,7 +916,7 @@
 
                                 <div class="mt-3 grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div class="space-y-1">
-                                        <label class="text-xs font-bold text-gray-600  ml-2">站点类型</label>
+                                        <label class="text-xs font-bold text-gray-500  ml-2">站点类型</label>
                                         <select v-model="acc.siteType"
                                             class="w-full glass-input rounded-xl px-4 py-2 text-sm appearance-none cursor-pointer">
                                             <option value="china">中国站 (CNY ¥)</option>
@@ -924,7 +924,7 @@
                                         </select>
                                     </div>
                                     <div class="space-y-1">
-                                        <label class="text-xs font-bold text-gray-600  ml-2">备注 <span
+                                        <label class="text-xs font-bold text-gray-500  ml-2">备注 <span
                                                 class="text-gray-400">(可选)</span></label>
                                         <input v-model="acc.remark" placeholder="为该实例添加备注说明"
                                             class="w-full glass-input rounded-xl px-4 py-2 text-sm">
@@ -948,13 +948,13 @@
                                     <div v-if="acc.schedule && acc.schedule.enabled"
                                         class="flex flex-wrap gap-4 items-center animate-fade-in">
                                         <div class="flex items-center gap-2">
-                                            <span class="text-xs text-gray-600">开机时间</span>
+                                            <span class="text-xs text-gray-500">开机时间</span>
                                             <input type="time" v-model="acc.schedule.startTime"
                                                 class="bg-white/80 border border-gray-200 rounded-lg px-2 py-1 text-sm">
                                         </div>
                                         <div class="w-4 h-px bg-gray-300"></div>
                                         <div class="flex items-center gap-2">
-                                            <span class="text-xs text-gray-600">关机时间</span>
+                                            <span class="text-xs text-gray-500">关机时间</span>
                                             <input type="time" v-model="acc.schedule.stopTime"
                                                 class="bg-white/80 border border-gray-200 rounded-lg px-2 py-1 text-sm">
                                         </div>
