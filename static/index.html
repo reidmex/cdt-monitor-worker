@@ -198,7 +198,7 @@
                         </svg>
                     </button>
 
-                    <button v-if="isAdmin" @click="refreshSingle(item.id, index)"
+                    <button v-if="isAdmin" @click="refreshSingle(item.id)"
                         class="p-1 rounded-full hover:bg-white/50 text-gray-400 hover:text-gray-600 transition-colors"
                         :class="{'animate-spin': refreshingMap[item.id]}" :disabled="refreshingMap[item.id]"
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
@@ -1280,8 +1280,8 @@
                     }
                 };
 
-                const refreshSingle = async (id, index) => {
-                    refreshingMap.value[index] = true;
+                const refreshSingle = async (id) => {
+                    refreshingMap.value[id] = true;
                     try {
                         const res = await fetch('?action=refresh_account', {
                             method: 'POST',
@@ -1294,7 +1294,7 @@
                     } catch (e) {
                         console.error(e);
                     } finally {
-                        refreshingMap.value[index] = false;
+                        refreshingMap.value[id] = false;
                     }
                 };
 
