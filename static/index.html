@@ -187,9 +187,9 @@
             class="w-full max-w-5xl grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 animate-fade-in-up">
             <div v-for="(item, index) in statusData" :key="index"
                 class="glass-panel rounded-[32px] p-4 flex flex-col justify-between relative overflow-hidden">
-                <div class="absolute top-0 right-0 p-6 opacity-50 flex gap-2">
+                <div class="absolute top-0 right-0 p-6 opacity-50 flex items-center gap-2">
                     <button v-if="isAdmin" @click="openChart(item.id, item.account)"
-                        class="p-1 rounded-full hover:bg-white/50 text-gray-400 hover:text-blue-500 transition-colors mr-1"
+                        class="p-1 rounded-full hover:bg-white/50 text-gray-400 hover:text-blue-500 transition-colors mr-1 flex items-center justify-center"
                         title="查看流量历史">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
                             stroke="currentColor" class="w-4 h-4">
@@ -199,7 +199,7 @@
                     </button>
 
                     <button v-if="isAdmin" @click="refreshSingle(item.id, index)"
-                        class="p-1 rounded-full hover:bg-white/50 text-gray-400 hover:text-gray-600 transition-colors"
+                        class="p-1 rounded-full hover:bg-white/50 text-gray-400 hover:text-gray-600 transition-colors flex items-center justify-center"
                         :class="{'animate-spin': refreshingMap[index]}" :disabled="refreshingMap[index]">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
                             stroke="currentColor" class="w-4 h-4">
@@ -207,7 +207,7 @@
                                 d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
                         </svg>
                     </button>
-                    <span class="relative flex h-3 w-3">
+                    <span class="relative flex h-3 w-3 items-center justify-center my-auto">
                         <!-- 🟠 心跳异常：橙闪 -->
                         <template v-if="item.instanceStatus === 'Unknown'">
                             <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-500 opacity-75"></span>
