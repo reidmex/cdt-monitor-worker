@@ -25,25 +25,34 @@
             scrollbar-width: none;
         }
 
-        /* 字体全局设置 - SF Pro Display */
+        /* ==========================================
+           1. 字体与渲染全局设置
+           ========================================== */
         body {
             background-color: #F2F2F7 !important;
-            font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif !important;
-            -webkit-font-smoothing: subpixel-antialiased;
-            -moz-osx-font-smoothing: auto;
+            /* 去掉了 !important，允许 input 等元素局部调整字体 */
+            font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', 'Segoe UI', Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
             text-rendering: optimizeLegibility;
         }
 
-        /* 20px 及以上大字号用灰度锐化 */
+        /* 大字号（20px及以上）收紧字距，还原苹果高级感 */
         .text-2xl, .text-3xl, .text-4xl, .text-5xl, .text-6xl {
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
+            letter-spacing: -0.02em; 
         }
 
-        /* 数字/账号等 monospace 用系统等宽字体 */
+        /* ==========================================
+           2. 数字等宽与卡片面板
+           ========================================== */
+        /* 全局让卡片内的数字对齐，防止金额/账号变动时文本左右发抖 */
         .glass-panel p,
-        .glass-panel span {
-            transform: translateZ(0);
+        .glass-panel span,
+        .glass-input,
+        .font-mono {
+            font-variant-numeric: tabular-nums; 
         }
 
         .glass-panel {
@@ -60,11 +69,11 @@
                 inset 0 1px 0 rgba(255, 255, 255, 0.8),
                 inset 0 -1px 0 rgba(255, 255, 255, 0.15),
                 0 0 0 1px rgba(255, 255, 255, 0.25);
+            will-change: transform, box-shadow; /* 显式声明，提升渲染性能 */
             transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
                         box-shadow 0.35s ease,
                         background-color 0.35s ease,
                         border-color 0.35s ease;
-            will-change: transform;
         }
 
         .glass-panel:hover {
@@ -81,25 +90,39 @@
                 0 0 0 1px rgba(255, 255, 255, 0.35);
         }
 
+        /* ==========================================
+           3. 输入框与交互元素 (精细化控制)
+           ========================================== */
         .glass-input {
             background: rgba(242, 242, 247, 0.5);
+            border: 1px solid transparent; /* 预留边框位置，防止 focus 时抖动 */
             box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.02);
-            transition: all 0.2s;
+            caret-color: #007AFF; /* 苹果标志性的蓝色光标 */
+            /* 继承 body 字体，同时确保密码等不受影响 */
+            font-family: inherit; 
+            transition: background-color 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
         }
 
         .glass-input:focus {
-            background: #fff;
-            box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.05);
+            outline: none;
+            background: #ffffff;
+            border-color: rgba(0, 122, 255, 0.15); /* 淡淡的蓝色边框提神 */
+            box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1), inset 0 1px 2px rgba(0, 0, 0, 0.02);
         }
 
+        /* 点击反馈（带阻尼感的缩放） */
         .tap-effect:active {
             transform: scale(0.96);
             transition: transform 0.1s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
 
+        /* ==========================================
+           4. 提示组件 Tooltip
+           ========================================== */
         .tooltip-content {
             visibility: hidden;
             opacity: 0;
+            pointer-events: none; /* 防止鼠标误触未显示的 tooltip */
             left: -2rem;
             transform: translateY(10px);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -122,6 +145,17 @@
             }
         }
 
+        /* 适配移动端：只有在非触摸设备上才激发 hover，避免手机端卡死 */
+        @media (hover: none) {
+            .group:hover .tooltip-content {
+                visibility: hidden;
+                opacity: 0;
+            }
+        }
+
+        /* ==========================================
+           5. Vue 动效 (Dropdown & Chart)
+           ========================================== */
         .dropdown-enter-active,
         .dropdown-leave-active {
             transition: all 0.2s ease;
@@ -133,10 +167,9 @@
             transform: translateY(-10px);
         }
 
-        /* Chart Modal Animations */
         .chart-enter-active,
         .chart-leave-active {
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); /* 升级为苹果御用超平滑曲线 */
         }
 
         .chart-enter-from,
