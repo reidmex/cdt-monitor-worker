@@ -659,8 +659,8 @@
                                     <div
                                         class="absolute left-0.5 top-0.5 w-4 h-4 bg-white rounded-full transition-transform peer-checked:translate-x-5">
                                     </div>
-                                </div>
-                            </div>
+                                <!--</div>-->
+                            <!--</div>-->
 
                             <div class="flex items-center justify-between pt-2">
                                 <label class="text-xs font-bold text-gray-500 ml-2">定时任务邮件通知</label>
@@ -673,7 +673,7 @@
                                         class="absolute left-0.5 top-0.5 w-4 h-4 bg-white rounded-full transition-transform peer-checked:translate-x-5">
                                     </div>
                                 </div>
-                            </div>
+                            <!--</div>-->
 
                             <div class="flex items-center justify-between pt-2">
                                 <div class="flex items-center gap-1">
@@ -696,7 +696,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                <!--</div>-->
                                 <div class="relative inline-block w-10 mr-2">
                                     <input type="checkbox" v-model="config.enable_billing" id="toggle-billing"
                                         class="peer sr-only" />
@@ -863,7 +863,7 @@
                                     {{ testingTelegram ? '发送中...' : '发送测试消息' }}
                                 </button>
                             </div>
-                        </div>
+                        <!--</div>-->
 
                         <!-- Webhook Tab -->
                         <div v-show="currentNotifyTab === 'webhook'" class="space-y-3 animate-fade-in flex-1">
@@ -929,8 +929,8 @@
                                     {{ testingWebhook ? '发送中...' : '发送测试消息' }}
                                 </button>
                             </div>
-                        </div>
-                    </div>
+                        <!--</div>-->
+                    <!--</div>-->
                 </div>
 
                 <div v-show="currentConfigTab === 'account'" class="space-y-4">
@@ -1040,7 +1040,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                </div>
+                                <!--</div>-->
                                 <div v-if="idx !== config.Accounts.length - 1" class="h-px bg-gray-300 my-4 mx-2"></div>
                             </template>
 
@@ -1158,12 +1158,12 @@
                                     {{ log.message }}
                                 </p>
                             </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
 
     <script src="vue.global.prod.js"></script>
     <script>
