@@ -517,9 +517,32 @@
                 <div class="h-px bg-gray-300 flex-1"></div>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <div class="lg:col-span-1 space-y-8">
-                    <div class="glass-panel rounded-[32px] p-4 overflow-visible z-20">
+            <div class="glass-panel rounded-[32px] p-4 md:p-6 overflow-visible">
+                <div class="flex bg-gray-100/80 p-1 rounded-xl mb-6 overflow-x-auto no-scrollbar">
+                    <button @click="currentConfigTab = 'global'"
+                        class="flex-1 whitespace-nowrap px-4 py-2 text-xs md:text-sm font-bold rounded-lg transition-all"
+                        :class="currentConfigTab === 'global' ? 'bg-white text-[#1C1C1E] shadow-sm' : 'text-gray-400 hover:text-gray-600'">
+                        全局设置
+                    </button>
+                    <button @click="currentConfigTab = 'notify'"
+                        class="flex-1 whitespace-nowrap px-4 py-2 text-xs md:text-sm font-bold rounded-lg transition-all"
+                        :class="currentConfigTab === 'notify' ? 'bg-white text-[#1C1C1E] shadow-sm' : 'text-gray-400 hover:text-gray-600'">
+                        通知配置
+                    </button>
+                    <button @click="currentConfigTab = 'account'"
+                        class="flex-1 whitespace-nowrap px-4 py-2 text-xs md:text-sm font-bold rounded-lg transition-all"
+                        :class="currentConfigTab === 'account' ? 'bg-white text-[#1C1C1E] shadow-sm' : 'text-gray-400 hover:text-gray-600'">
+                        账号配置
+                    </button>
+                    <button @click="currentConfigTab = 'logs'"
+                        class="flex-1 whitespace-nowrap px-4 py-2 text-xs md:text-sm font-bold rounded-lg transition-all"
+                        :class="currentConfigTab === 'logs' ? 'bg-white text-[#1C1C1E] shadow-sm' : 'text-gray-400 hover:text-gray-600'">
+                        系统日志
+                    </button>
+                </div>
+
+                <div class="space-y-6">
+                    <div v-show="currentConfigTab === 'global'" class="glass-panel rounded-[32px] p-4 overflow-visible z-20">
                         <h3 class="text-sm font-bold uppercase tracking-widest mb-4">全局设置</h3>
                         <div class="space-y-3">
                             <div class="space-y-1">
@@ -687,7 +710,7 @@
                         </div>
                     </div>
 
-                    <div class="glass-panel rounded-[32px] p-4 z-10 flex flex-col">
+                    <div v-show="currentConfigTab === 'notify'" class="glass-panel rounded-[32px] p-4 z-10 flex flex-col">
                         <h3 class="text-sm font-bold uppercase tracking-widest mb-4">通知配置</h3>
 
                         <!-- Tabs -->
@@ -1032,7 +1055,7 @@
                         </div>
                     </div>
 
-                    <div class="glass-panel rounded-[32px] md:rounded-[40px] p-4 md:p-6 relative overflow-hidden">
+                    <div v-show="currentConfigTab === 'logs'" class="glass-panel rounded-[32px] md:rounded-[40px] p-4 md:p-6 relative overflow-hidden">
                         <div class="flex flex-wrap items-center justify-between gap-3 mb-3 md:mb-4">
                             <div class="flex items-center gap-3 md:gap-4">
                                 <h3 class="text-base md:text-lg font-bold text-[#1C1C1E]">系统日志</h3>
@@ -1174,6 +1197,7 @@
 
                 // 通知相关
                 const currentNotifyTab = ref('email');
+                const currentConfigTab = ref('global');
                 const testingTelegram = ref(false);
                 const testingWebhook = ref(false);
 
@@ -1729,7 +1753,7 @@
                     toggleInstance,
                     toggleAdmin, performLogin, saveConfig, sendTestEmail, sendingEmail, addAccount, removeAccount, getInstanceStatusColor, performSetup, refreshSingle, fetchLogs,
                     currentLogTab, clearLogs, logAutoRefresh,
-                    currentNotifyTab, testingTelegram, testingWebhook, sendTestTelegram, sendTestWebhook
+                    currentNotifyTab, testingTelegram, testingWebhook, sendTestTelegram, sendTestWebhook, currentConfigTab
                 };
             }
         }).mount('#app');
