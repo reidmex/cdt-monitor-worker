@@ -265,10 +265,6 @@
                       </template>
                       <span v-else class="text-[10px] text-gray-400">{{ item.cost.error }}</span>
                     </div>
-                    <div v-if="item.remark" class="flex justify-between items-center">
-                        <span class="text-sm font-bold text-gray-500 ">备注</span>
-                        <span class="text-sm font-medium text-[#1C1C1E]">{{ item.remark }}</span>
-                    </div>
                     <div class="flex justify-between items-center">
                         <span class="text-sm font-bold text-gray-400">阈值</span>
                         <span class="text-sm font-bold text-gray-400">{{ item.threshold }}%</span>
