@@ -307,6 +307,9 @@ export class Monitor {
         instanceStatus: status,
         lastUpdated: fmtTime(lastUpdate > 0 ? lastUpdate : currentTime),
         remark: account.remark || '',
+        scheduleEnabled: account.schedule_enabled == 1,
+        scheduleStart: account.start_time,
+        scheduleStop: account.stop_time,
       };
 
       if (billingEnabled) {
