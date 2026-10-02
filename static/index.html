@@ -825,14 +825,14 @@
                             </div>
 
                             <div class="space-y-1 pt-2">
-                                <label class="text-[11px] font-bold text-gray-700 ml-2">自定义 Headers (JSON格式，可选)</label>
+                                <label class="text-xs font-bold text-gray-500 ml-2">自定义 Headers (JSON格式，可选)</label>
                                 <textarea v-model="config.Notification.webhook.headers"
                                     placeholder='{"Authorization": "Bearer token", "Content-Type": "application/json"}'
                                     class="w-full glass-input rounded-xl px-4 py-2 text-xs font-mono min-h-[60px]"></textarea>
                             </div>
 
                             <div class="space-y-1">
-                                <label class="text-[11px] font-bold text-gray-700 ml-2">自定义 Body 模板 (可选)</label>
+                                <label class="text-xs font-bold text-gray-500 ml-2">自定义 Body 模板 (可选)</label>
                                 <textarea v-model="config.Notification.webhook.body"
                                     placeholder='{"title": "#TITLE#", "content": "#MSG#", "traffic": "#TRAFFIC#"}'
                                     class="w-full glass-input rounded-xl px-4 py-2 text-xs font-mono min-h-[100px]"></textarea>
