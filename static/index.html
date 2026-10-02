@@ -30,14 +30,14 @@
            ========================================== */
         body {
             background-color: #F2F2F7 !important;
-            /* 去掉了 !important，允许 input 等元素局部调整字体 */
-            font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', 'Segoe UI', Arial, sans-serif;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
+            font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            /* 正文保留子像素，保证小字饱满 */
+            -webkit-font-smoothing: subpixel-antialiased;
+            -moz-osx-font-smoothing: auto;
             text-rendering: optimizeLegibility;
         }
 
-        /* 大字号（20px及以上）收紧字距，还原苹果高级感 */
+        /* 仅大字号（20px+）灰度锐化 + 字距收紧 */
         .text-2xl, .text-3xl, .text-4xl, .text-5xl, .text-6xl {
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
