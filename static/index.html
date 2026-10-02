@@ -207,23 +207,23 @@
                                 d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
                         </svg>
                     </button>
-                    <div class="relative w-2 h-2 mt-1.5">
+                    <span class="relative flex h-2 w-2">
                         <!-- 🟠 心跳异常：橙闪 -->
                         <template v-if="item.instanceStatus === 'Unknown'">
-                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-gray-900 opacity-75"></span>
-                            <span class="absolute inline-flex rounded-full h-full w-full bg-gray-900 shadow-[0_0_10px_rgba(31,41,55,0.8)]"></span>
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-2 w-2 bg-orange-500"></span>
                         </template>
                         <!-- 🟢 心跳正常 + 开机：绿闪 -->
                         <template v-else-if="item.instanceStatus === 'Running'">
                             <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                            <span class="absolute inline-flex rounded-full h-full w-full bg-green-500 shadow-[0_0_10px_rgba(52,199,89,0.5)]"></span>
+                            <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
                         </template>
                         <!-- 🔴 心跳正常 + 关机/过渡态：红闪 -->
                         <template v-else>
                             <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                            <span class="absolute inline-flex rounded-full h-full w-full bg-red-500 shadow-[0_0_10px_rgba(255,59,48,0.5)]"></span>
+                            <span class="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
                         </template>
-                    </div>
+                    </span>
                 </div>
 
                 <div>
