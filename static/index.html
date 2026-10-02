@@ -189,7 +189,7 @@
                 class="glass-panel rounded-[32px] p-4 flex flex-col justify-between relative overflow-hidden">
                 <div class="absolute top-0 right-0 p-6 opacity-50 flex items-center gap-2">
                     <button v-if="isAdmin" @click="openChart(item.id, item.account)"
-                        class="p-1 rounded-full hover:bg-white/50 text-blue-400 hover:text-blue-500 transition-colors mr-1 flex items-center justify-center"
+                        class="p-1 rounded-full hover:bg-white/50 text-blue-800 hover:text-blue-800 transition-colors mr-1 flex items-center justify-center"
                         title="查看流量历史">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
                             stroke="currentColor" class="w-4 h-4">
@@ -199,7 +199,7 @@
                     </button>
 
                     <button v-if="isAdmin" @click="refreshSingle(item.id, index)"
-                        class="p-1 rounded-full hover:bg-white/50 text-gray-400 hover:text-gray-600 transition-colors flex items-center justify-center mr-2"
+                        class="p-1 rounded-full hover:bg-white/50 text-blue-600 hover:text-blue-800 transition-colors flex items-center justify-center mr-2"
                         :class="{'animate-spin': refreshingMap[index]}" :disabled="refreshingMap[index]">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
                             stroke="currentColor" class="w-4 h-4">
