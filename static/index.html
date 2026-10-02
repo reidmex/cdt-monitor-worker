@@ -261,7 +261,9 @@
 
                 <div>
                     <div class="flex items-center gap-2 mb-2">
-                        <span v-if="item.remark" class="text-2xl font-bold text-[#1C1C1E]">{{ item.remark }}</span>
+                        <span v-if="item.remark" class="inline-flex items-center px-4 py-2 rounded-xl text-2xl font-bold text-white bg-blue-600 shadow-md shadow-blue-500/20">
+                          {{ item.remark }}
+                        </span>
                         <span
                             class="px-2 py-1 rounded-lg text-[10px] font-bold tracking-wider text-amber-400 uppercase border border-white/40">{{
                             item.regionName }}</span>
