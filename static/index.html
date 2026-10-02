@@ -223,14 +223,14 @@
 
                 <div>
                     <div class="flex items-center gap-2 mb-2">
-                        <span v-if="item.remark" class="text-base font-extrabold text-[#1C1C1E]">{{ item.remark }}</span>
+                        <span v-if="item.remark" class="text-2xl font-extrabold text-[#1C1C1E]">{{ item.remark }}</span>
                         <span
                             class="px-2 py-1 bg-gray-100/50 rounded-lg text-[10px] font-bold tracking-wider text-gray-500 uppercase border border-white/40">{{
                             item.regionName }}</span>
                         <span class="text-[10px] text-gray-400">{{ item.lastUpdated ? item.lastUpdated.split(' ')[1] :
                             '' }} 更新</span>
                     </div>
-                    <h3 class="text-2xl font-extrabold tracking-tighter text-[#1C1C1E]">
+                    <h3 class="text-xl font-extrabold tracking-tighter text-[#1C1C1E]">
                         {{ Number(item.flow_used).toFixed(2) }} <span class="text-base font-medium text-gray-400">GB</span>
                     </h3>
                     <div class="flex justify-between items-end mt-0.5">
