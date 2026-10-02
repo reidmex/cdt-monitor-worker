@@ -290,7 +290,7 @@
                         <!-- 状态：运行中 -> 显示关机按钮 -->
                         <button v-if="item.instanceStatus === 'Running'" @click="toggleInstance(item.id, 'Stop', index)"
                             :disabled="item.isOperating"
-                            class="tap-effect px-3 py-1 text-xs font-bold text-red-600 bg-red-50/80 border border-red-700 rounded-lg shadow-[0_2px_8px_rgba(220,38,38,0.15)] hover:shadow-[0_4px_14px_rgba(220,38,38,0.28)] hover:-translate-y-0.5 active:translate-y-0 active:shadow-[0_1px_3px_rgba(220,38,38,0.2)] disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none transition-all flex items-center gap-1">
+                            class="tap-effect px-3 py-1 text-xs font-bold text-rose-600 bg-rose-50/80 border border-rose-700 rounded-lg shadow-[0_2px_8px_rgba(225,29,72,0.15)] hover:shadow-[0_4px_14px_rgba(225,29,72,0.28)] hover:-translate-y-0.5 active:translate-y-0 active:shadow-[0_1px_3px_rgba(225,29,72,0.2)] disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none transition-all flex items-center gap-1"
                             <svg v-if="!item.isOperating" xmlns="http://www.w3.org/2000/svg" fill="none"
                                 viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5">
                                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -309,7 +309,7 @@
 
                         <!-- 状态：已停止 -> 显示开机按钮 -->
                         <button v-else @click="toggleInstance(item.id, 'Start', index)" :disabled="item.isOperating"
-                            class="tap-effect px-3 py-1 text-xs font-bold text-green-600 bg-green-50/80 border border-green-700 rounded-lg shadow-[0_2px_8px_rgba(22,163,74,0.15)] hover:shadow-[0_4px_14px_rgba(22,163,74,0.28)] hover:-translate-y-0.5 active:translate-y-0 active:shadow-[0_1px_3px_rgba(22,163,74,0.2)] disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none transition-all flex items-center gap-1">
+                            class="tap-effect px-3 py-1 text-xs font-bold text-emerald-600 bg-emerald-50/80 border border-emerald-700 rounded-lg shadow-[0_2px_8px_rgba(5,150,105,0.15)] hover:shadow-[0_4px_14px_rgba(5,150,105,0.28)] hover:-translate-y-0.5 active:translate-y-0 active:shadow-[0_1px_3px_rgba(5,150,105,0.2)] disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none transition-all flex items-center gap-1"
                             <svg v-if="!item.isOperating" xmlns="http://www.w3.org/2000/svg" fill="none"
                                 viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5">
                                 <path stroke-linecap="round" stroke-linejoin="round"
