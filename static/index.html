@@ -210,8 +210,8 @@
                     <span class="relative flex h-3 w-3">
                         <!-- 🟠 心跳异常：橙闪 -->
                         <template v-if="item.instanceStatus === 'Unknown'">
-                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-300 opacity-75"></span>
-                            <span class="relative inline-flex rounded-full h-3 w-3 bg-orange-400"></span>
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-500 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-3 w-3 bg-orange-600"></span>
                         </template>
                         <!-- 🟢 心跳正常 + 开机：绿闪 -->
                         <template v-else-if="item.instanceStatus === 'Running'">
