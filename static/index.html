@@ -1055,7 +1055,7 @@
                         </div>
                     </div>
 
-                    <div v-show="currentConfigTab === 'logs'" class="glass-panel rounded-[32px] md:rounded-[40px] p-4 md:p-6 relative">
+                    <div v-show="currentConfigTab === 'logs'" class="glass-panel rounded-[32px] md:rounded-[40px] p-4 md:p-6 relative overflow-hidden">
                         <div class="flex flex-wrap items-center justify-between gap-3 mb-3 md:mb-4">
                             <div class="flex items-center gap-3 md:gap-4">
                                 <h3 class="text-base md:text-lg font-bold text-[#1C1C1E]">系统日志</h3>
@@ -1085,10 +1085,10 @@
                                     class="text-xs text-red-400 hover:text-red-500 font-medium transition px-2">清空</button>
                             </div>
                         </div>
-
+                    </div>
                         <!-- 桌面端：表格布局 -->
                         <div
-                            class="hidden md:block overflow-y-auto max-h-96 h-96 pr-2 no-scrollbar bg-white/30 rounded-2xl border border-white/40">
+                            class="hidden md:block overflow-y-auto max-h-96 pr-2 no-scrollbar bg-white/30 rounded-2xl border border-white/40">
                             <table class="w-full text-left border-collapse">
                                 <thead class="bg-gray-50/50 sticky top-0 backdrop-blur-md">
                                     <tr>
@@ -1135,7 +1135,7 @@
 
                         <!-- 移动端：卡片列表布局 -->
                         <div
-                            class="md:hidden overflow-y-auto max-h-96 h-96 no-scrollbar bg-white/30 rounded-2xl border border-white/40">
+                            class="md:hidden overflow-y-auto max-h-96 no-scrollbar bg-white/30 rounded-2xl border border-white/40">
                             <div v-if="systemLogs.length === 0" class="py-12 text-center text-gray-400 text-xs">
                                 暂无{{ currentLogTab === 'action' ? '动作' : '心跳' }}记录
                             </div>
